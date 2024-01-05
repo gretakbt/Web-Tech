@@ -54,4 +54,3 @@ urlpatterns = [
 
 
 
-#test ob git klappt 
