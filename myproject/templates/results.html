@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block main %}
+
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <!--angepasst-->
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2 class="panel-title">Poll Result</h2>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <a href="javascript:history.go(-1)" class="btn btn-primary">Zurück</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <h3>{{ poll.question }}</h3>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item">{{ poll.option_one }} &mdash; <strong>{{ poll.option_one_count }}</strong></li>
+                <li class="list-group-item">{{ poll.option_two }} &mdash; <strong>{{ poll.option_two_count }}</strong></li>
+                <li class="list-group-item">{{ poll.option_three }} &mdash; <strong>{{ poll.option_three_count }}</strong></li>
+            </ul>
+
+            <div class="panel-footer">
+                Total &mdash; <strong>{{ poll.total }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}group{% endblock %}
+
+{% block main %}
+<!--angepasst gpt-->
+<style>
+      .list-group-item {
+        display: 100;
+        justify-content: space-between;
+        align-items: center;
+        word-wrap: break-word; 
+    }
+
+    .list-group-item strong {
+        flex: 1;
+        margin-right: 10px;
+        word-wrap: break-word; 
+    }
+
+    .list-group-item .btn {
+        flex-shrink: 0;
+        margin-left: 5px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-0"> <!--angepasst-->
+        <div class="panel panel-default">
+            <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;"> <!--angepasst gpt-->
+                <div class="panel-title">
+                    <h2>Available Polls</h2>
+                  </div>
+                <a href="{% url 'create' group_id=group.id %}" class="btn btn-default btn-xs"style="align-self: flex-start;">Create new Poll</a> <!--Angepasst-->
+            </div>
+                
+            <ul class="list-group">
+                {% for poll in polls %}
+                <li class="list-group-item">
+                    <strong>{{ poll.question }}</strong>
+                    <span>
+                        <a href="{% url 'vote' poll.id %}" class="btn btn-info btn-xs">Vote</a> &nbsp;
+                        <a href="{% url 'results' poll.id %}" class="btn btn-default btn-xs">View Results</a> &nbsp;
+                        <!--angepasst GPT-->
+                        <form action="{% url 'delete_poll' poll.id %}" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this poll?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                        </form>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

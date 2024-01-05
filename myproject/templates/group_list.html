@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Meine Gruppen{% endblock %}
+
+{% block main%}
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3"> 
+        <div class="panel panel-default">
+            <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;"> 
+            <!--angepasst-->
+              <div class="panel-title">
+                <h2>My Groups</h2>
+              </div>
+              <a href="{% url 'create_group'%}" class="btn btn-default btn-xs" style="align-self: flex-start;">Create new Group</a>
+            <!--angepasst ende-->  
+            </div>
+              <ul class="list-group">
+                  {% for group in groups %}
+                  <div class="list-group-item">
+                    <h3>
+                      <a href="{% url 'group_detail' group.id %}" style="text-decoration: none;">{{ group.name }}</a><!--angepasst-->
+                    </h3>
+                    
+                  </div>
+                  {% endfor %}
+                </ul>
+          </div>
+    </div>
+</div>
+{% endblock %}
