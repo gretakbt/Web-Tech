@@ -50,6 +50,8 @@ urlpatterns = [
     path('group/', todolist_views.GroupListView.as_view(), name='group'),
     path('group/<int:group_id>/', todolist_views.group_detail, name='group_detail'),
     path('create_group/', todolist_views.create_group, name='create_group'),
+    path('group/<int:group_id>/leave/', todolist_views.leave_group, name='leave_group'),
+
 ]
 
 

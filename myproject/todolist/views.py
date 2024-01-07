@@ -232,3 +232,22 @@ def create_group(request):
 
 
 
+
+def leave_group(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    user = request.user
+    
+    # Überprüfen, ob der Benutzer in der Gruppe ist, bevor er sie verlässt
+    if user in group.members.all():
+        group.members.remove(user)
+        if group.members.count() == 0:
+             with transaction.atomic():
+                # Lösche alle zugehörigen Umfragen (Polls)
+                group_polls = group.group_polls.all()
+                group_polls.delete()
+                group.delete()
+        return redirect('tasks')  # Weiterleitung zur Startseite
+    else:
+        # Benutzer ist nicht in der Gruppe, vielleicht eine Meldung anzeigen
+        return redirect('group_detail', group_id=group_id)
+

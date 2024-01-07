@@ -53,5 +53,6 @@
 
         </div>
     </div>
+    <a href="{% url 'leave_group' group.id %}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to leave this group?');">Leave Group</a>
 </div>
 {% endblock %}
