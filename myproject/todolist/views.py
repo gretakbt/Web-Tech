@@ -30,6 +30,7 @@ from .forms import CustomUserCreationForm
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages  # Hinzugefügter Import für Nachrichten
+from django.contrib.auth.models import User
 
 
 
@@ -232,3 +233,42 @@ def create_group(request):
 
 
 
+
+def leave_group(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    user = request.user
+    
+    # Überprüfen, ob der Benutzer in der Gruppe ist, bevor er sie verlässt
+    if user in group.members.all():
+        group.members.remove(user)
+        if group.members.count() == 0:
+             with transaction.atomic():
+                # Lösche alle zugehörigen Umfragen (Polls)
+                group_polls = group.group_polls.all()
+                group_polls.delete()
+                group.delete()
+        return redirect('tasks')  # Weiterleitung zur Startseite
+    else:
+        # Benutzer ist nicht in der Gruppe, vielleicht eine Meldung anzeigen
+        return redirect('group_detail', group_id=group_id)
+
+
+def add_member(request, group_id):
+    if request.method == 'POST':
+        # Benutzername aus dem Formular abrufen
+        username = request.POST.get('username', '')
+
+        try:
+            user_to_add = User.objects.get(username=username)
+            group = Group.objects.get(pk=group_id)
+
+            if user_to_add not in group.members.all():
+                group.members.add(user_to_add)
+                messages.success(request, f'User "{username}" was successfully added to the group.')
+            else:
+                messages.warning(request, f'User "{username}" is already in the group.')
+        except User.DoesNotExist:
+            messages.error(request, f'User "{username}" not found.')
+
+    # Hier kannst du weitere Logik hinzufügen, wenn die Aktion nicht erfolgreich war
+    return redirect('group_detail', group_id=group_id)
