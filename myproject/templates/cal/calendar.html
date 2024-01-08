@@ -1,0 +1,109 @@
+{% extends 'cal/base.html' %}
+
+{% block content %}
+
+<div class="clearfix">
+    <a class="btn btn-info" id="left" href="{% url 'cal:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <form action="/calendar/" method="GET" id="calendar-form">
+        {%csrf_token%}
+        <button type="submit" class="btn btn-info">Home</button>
+    </form>
+    <a class="btn btn-info right" href="{% url 'cal:calendar' %}?{{ next_month }}"> Next Month </a>
+</div>
+<div class="theme-switch-wrapper">
+    <div class="btn btn-info" id="add-event">
+        <i class="fas fa-plus"><a role="button" data-target="#myModal" id="myModal"> New Event</a></i>
+    </div>
+    <!-- <div id="droppable">
+        <i class="far fa-trash-alt fa-3x"></i>
+    </div> -->
+    <form action="/calendar/yearly_view/" method="GET">
+        {%csrf_token%}
+        <button type="submit" class="btn btn-info">Yearly View</button>
+    </form>
+    <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider-dark round"></div>
+    </label>
+</div>
+<div class="wrapper">
+    <div class="left-col">
+        <!-- Today's date -->
+        <p class="display_day">{{ today | date:'d'}}</p>
+        <!-- Today's events -->
+        {%for event in events_for_today%}
+        <p class="day_event">{{event.title}}</p>
+        <p class="day_event">{{event.description}}</p>
+        <p class="day_event">{{event.start_time|date:'M d g:i A'}} - </p>
+        <p class="day_event">{{event.end_time|date:'M d g:i A'}}</p>
+        <hr>
+        {%endfor%}
+    </div>
+    <div class="right-col">
+        {{ calendar }}
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="x">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form method="post" action="/event/new/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">Title: </label>
+                        <input type="text" class="form-control" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description: </label>
+                        <textarea name="description" cols="5" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_time">Start Time: </label>
+                        <input type="datetime-local" class="form-control" name="start_time">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_time">End Time: </label>
+                        <input type="datetime-local" class="form-control" name="end_time">
+                    </div>
+                    <div class="form-group">
+                        <p>Choose a color category for this event: </p>
+                        <div class="color-picker" style="background: #5549A3;">
+                            <input type="hidden" value="#5549A3" class="color">
+                        </div>
+                        <div class="color-picker" style="background: #6d6c6c;">
+                            <input type="hidden" value="#6d6c6c" class="color">
+                        </div>
+                        <div class="color-picker" style="background: #2323a0;">
+                            <input type="hidden" value="#2323a0" class="color">
+                        </div>
+                        <div class="color-picker" style="background: #940D23;">
+                            <input type="hidden" value="#940D23" class="color">
+                        </div>
+                        <div class="color-picker" style="background: #10750c;">
+                            <input type="hidden" value="#179213" class="color">
+                        </div>
+                        <input type="hidden" id="bg_color" name="bg_color" value="">
+                    </div>
+            </div>
+            <button type="submit" class="btn btn-info right"> Submit </button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" class="close" data-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+{% endblock %}

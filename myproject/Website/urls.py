@@ -14,14 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from poll import views as poll_views
 from  todolist import views as todolist_views
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 
-
+from cal import views as cal_views
 
 from todolist.views import GroupListView
 
@@ -53,6 +53,7 @@ urlpatterns = [
     path('group/<int:group_id>/leave/', todolist_views.leave_group, name='leave_group'),
     path('group/<int:group_id>/add_member/', todolist_views.add_member, name='add_member'),
 
+    path('', include('cal.urls'))
 
 ]
 
