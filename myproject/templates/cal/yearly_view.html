@@ -1,0 +1,109 @@
+{% extends 'cal/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="theme-switch-wrapper" id="yearly_view_top">
+  <form action="/calendar/" method="GET">
+    {%csrf_token%}
+    <button type="submit" class="btn btn-info">Back To {{today |date:'M Y'}}</button>
+  </form>
+  <label class="theme-switch" for="checkbox">
+    <input type="checkbox" id="checkbox" />
+    <div class="slider-dark round"></div>
+  </label>
+</div>
+<form action="/calendar/change_view/" method="POST" id="yearly_view_form">
+  {%csrf_token%}
+
+  <div class="form-group" id="dropdown">
+    <p>Select Year: </p>
+    <select class="form-control" name="year">
+      <option value="2015">2015</option>
+      <option value="2016">2016</option>
+      <option value="2017">2017</option>
+      <option value="2018">2018</option>
+      <option value="2019">2019</option>
+      <option value="2020" selected>2020</option>
+      <option value="2021">2021</option>
+      <option value="2022">2022</option>
+      <option value="2023">2023</option>
+      <option value="2024">2024</option>
+      <option value="2025">2025</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary" id="go">Go</button>
+  <p>Select Month: </p>
+  <div class="season d-flex justify-content-around">
+    <div class="month-specs">
+      <p class="centered">January</p>
+      <img class="monthly-pics" src="{% static 'cal/img/jan_light.jpg' %}" alt="January"
+        data-alt-src="{% static 'cal/img/jan_dark.jpg' %}" data-alt="1">
+    </div>
+    <div class="month-specs">
+      <p class="centered">February</p>
+      <img class="monthly-pics" src="{% static 'cal/img/feb_light.jpg' %}" alt="February"
+        data-alt-src="{% static 'cal/img/feb_dark.jpg' %}" data-alt="2">
+    </div>
+    <div class="month-specs">
+      <p class="centered">March</p>
+      <img class="monthly-pics" src="{% static 'cal/img/march_light.jpg' %}" alt="March"
+        data-alt-src="{% static 'cal/img/march_dark.jpg' %}" data-alt="3">
+    </div>
+    <div class="month-specs">
+      <p class="centered">April</p>
+      <img class="monthly-pics" src="{% static 'cal/img/april_light.jpg' %}" alt="April"
+        data-alt-src="{% static 'cal/img/april_dark.jpg' %}" data-alt="4">
+    </div>
+  </div>
+  <div class="season d-flex justify-content-around">
+    <div class="month-specs">
+      <p class="centered">May</p>
+      <img class="monthly-pics" src="{% static 'cal/img/may_light.jpg' %}" alt="May"
+        data-alt-src="{% static 'cal/img/may_dark.jpg' %}" data-alt="5">
+    </div>
+    <div class="month-specs">
+      <p class="centered">June</p>
+      <img class="monthly-pics" src="{% static 'cal/img/june_light.jpg' %}" alt="June"
+        data-alt-src="{% static 'cal/img/june_dark.jpg' %}" data-alt="6">
+    </div>
+    <div class="month-specs">
+      <p class="centered">July</p>
+      <img class="monthly-pics" src="{% static 'cal/img/july_light.jpg' %}" alt="July"
+        data-alt-src="{% static 'cal/img/july_dark.jpg' %}" data-alt="7">
+    </div>
+    <div class="month-specs">
+      <p class="centered">August</p>
+      <img class="monthly-pics" src="{% static 'cal/img/aug_light.jpg' %}" alt="August"
+        data-alt-src="{% static 'cal/img/aug_dark.jpg' %}" data-alt="8">
+    </div>
+  </div>
+  <div class="season d-flex justify-content-around">
+    <div class="month-specs">
+      <p class="centered">September</p>
+      <img class="monthly-pics" src="{% static 'cal/img/sep_light.jpg' %}" alt="September"
+        data-alt-src="{% static 'cal/img/sep_dark.jpg' %}" data-alt="9">
+    </div>
+    <div class="month-specs">
+      <p class="centered">October</p>
+      <img class="monthly-pics" src="{% static 'cal/img/oct_light.jpg' %}" alt="October"
+        data-alt-src="{% static 'cal/img/oct_dark.jpg' %}" data-alt="10">
+
+    </div>
+    <div class="month-specs">
+      <p class="centered">November</p>
+      <img class="monthly-pics" src="{% static 'cal/img/nov_light.jpg' %}" alt="November"
+        data-alt-src="{% static 'cal/img/nov_dark.jpg' %}" data-alt="11">
+
+    </div>
+    <div class="month-specs">
+      <p class="centered">December</p>
+      <img class="monthly-pics" src="{% static 'cal/img/dec_light.jpg' %}" alt="December"
+        data-alt-src="{% static 'cal/img/dec_dark.jpg' %}" data-alt="12">
+
+    </div>
+  </div>
+  <input type="hidden" name="month" value="1" id="yearly_view_month">
+</form>
+
+{% endblock %}
