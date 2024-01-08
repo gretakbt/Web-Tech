@@ -5,25 +5,35 @@
 {% block main %}
 <!--angepasst gpt-->
 <style>
-      .list-group-item {
-        display: 100;
-        justify-content: space-between;
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
         align-items: center;
-        word-wrap: break-word; 
     }
 
-    .list-group-item strong {
-        flex: 1;
-        margin-right: 10px;
-        word-wrap: break-word; 
-    }
-
-    .list-group-item .btn {
-        flex-shrink: 0;
+    .button-container .btn {
         margin-left: 5px;
     }
 </style>
-
+<!--angepasst-->
+<div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="panel-title">
+        {{ group.name }}
+    </div>
+    <form method="post" action="{% url 'add_member' group_id=group.id %}">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Search user">
+        <button type="submit">Add Member</button>
+        <a href="{% url 'leave_group' group.id %}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to leave this group?');">Leave Group</a>
+    </form>
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+</div>
 <div class="row">
     <div class="col-lg-4 col-lg-offset-0"> <!--angepasst-->
         <div class="panel panel-default">
@@ -36,9 +46,10 @@
                 
             <ul class="list-group">
                 {% for poll in polls %}
+                <!--angepasst-->
                 <li class="list-group-item">
                     <strong>{{ poll.question }}</strong>
-                    <span>
+                    <div class="button-container">
                         <a href="{% url 'vote' poll.id %}" class="btn btn-info btn-xs">Vote</a> &nbsp;
                         <a href="{% url 'results' poll.id %}" class="btn btn-default btn-xs">View Results</a> &nbsp;
                         <!--angepasst GPT-->
@@ -46,29 +57,11 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-xs">Delete</button>
                         </form>
-                    </span>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
-
-            <div>
-                <form method="post" action="{% url 'add_member' group_id=group.id %}">
-                    {% csrf_token %}
-                    <input type="text" name="username" placeholder="Search user">
-                    <button type="submit">Add Member</button>
-                </form>
-                {% if messages %}
-                <ul class="messages">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
-        
-
         </div>
     </div>
-    <a href="{% url 'leave_group' group.id %}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to leave this group?');">Leave Group</a>
 </div>
 {% endblock %}
