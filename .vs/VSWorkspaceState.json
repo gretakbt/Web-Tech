@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\myproject",
+    "\\myproject\\cal",
+    "\\myproject\\templates",
+    "\\myproject\\templates\\cal"
   ],
+  "SelectedNode": "\\myproject\\cal\\urls.py",
   "PreviewInSolutionExplorer": false
 }
