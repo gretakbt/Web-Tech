@@ -2,9 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\myproject",
-    "\\myproject\\cal",
-    "\\myproject\\templates",
-    "\\myproject\\templates\\cal"
+    "\\myproject\\lib",
+    "\\myproject\\lib\\python3.12",
+    "\\myproject\\lib\\python3.12\\site-packages",
+    "\\myproject\\lib\\python3.12\\site-packages\\pip",
+    "\\myproject\\lib\\python3.12\\site-packages\\pip\\_vendor",
+    "\\myproject\\lib\\python3.12\\site-packages\\pip\\_vendor\\pygments",
+    "\\myproject\\lib\\python3.12\\site-packages\\pip\\_vendor\\pygments\\filters",
+    "\\myproject\\Website"
   ],
   "SelectedNode": "\\myproject\\cal\\urls.py",
   "PreviewInSolutionExplorer": false
