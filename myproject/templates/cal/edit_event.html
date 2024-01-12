@@ -7,63 +7,56 @@ Event
 {% block content %}
 <div class="clearfix">
   <a class="btn btn-info left" href="{% url 'cal:calendar' %}"> Back To Calendar </a>
-<div class="theme-switch-wrapper">
-	<label class="theme-switch" for="checkbox">
-		<input type="checkbox" id="checkbox" />
-		<div class="slider-dark round"></div>
-	</label>
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox">
+      <input type="checkbox" id="checkbox" />
+      <div class="slider-dark round"></div>
+    </label>
+  </div>
 </div>
-</div>
+
 {% if form.errors %}
-{% for field in form %}
-{% for error in field.errors %}
-<div class="alert alert-danger">
-  {{ field.label }} <strong>{{ error|escape }}</strong>
-</div>
-{% endfor %}
-{% endfor %}
-{% for error in form.non_field_errors %}
-<div class="alert alert-danger">
-  {{ field.label }} <strong>{{ error|escape }}</strong>
-</div>
-{% endfor %}
+  {% for field in form %}
+    {% for error in field.errors %}
+      <div class="alert alert-danger">
+        {{ field.label }} <strong>{{ error|escape }}</strong>
+      </div>
+    {% endfor %}
+  {% endfor %}
+  {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+      {{ error|escape }}
+    </div>
+  {% endfor %}
 {% endif %}
 
-<form method="post" action="/event/edit/{{event.id}}/" class="form">
+
+<form method="post" action="{% url 'cal:event_edit' event.id %}" class="form">
   {% csrf_token %}
   <p class="muted-color">Title:</p>
-  {{form.title}}
+  {{ form.title }}
   <p class="muted-color">Description: </p>
-  {{form.description}}
-  <p class="muted-color">Start Time: </p>
-  {{form.start_time}}
-  <p class="muted-color">End Time: </p>
-  {{form.end_time}}
+  {{ form.description }}
+  <div class="form-group">
+    <label for="start_time">Start Time: </label>
+    <input type="datetime-local" class="form-control" name="start_time" value="{{ event.start_time|date:'Y-m-d\TH:i' }}">
+  </div>
+  <div class="form-group">
+    <label for="end_time">End Time: </label>
+    <input type="datetime-local" class="form-control" name="end_time" value="{{ event.end_time|date:'Y-m-d\TH:i' }}">
+  </div>
 
   <div class="form-group">
     <p>Choose a color category for this event: </p>
-    {{form.bg_color}}
-    <br>
-    <div class="color-picker" style="background: #5549A3;">
-      <input type="hidden" value="#5549A3" class="color">
-    </div>
-    <div class="color-picker" style="background: #6d6c6c;">
-      <input type="hidden" value="#6d6c6c" class="color">
-    </div>
-    <div class="color-picker" style="background: #2323a0;">
-      <input type="hidden" value="#2323a0" class="color">
-    </div>
-    <div class="color-picker" style="background: #940D23;">
-      <input type="hidden" value="#940D23" class="color">
-    </div>
-    <div class="color-picker" style="background: #10750c;">
-      <input type="hidden" value="#179213" class="color">
-    </div>
-    <input type="hidden" id="bg_color" name="bg_color" value="">
+    {{ form.bg_color }}
+    
   </div>
+  
+
   <button type="submit" class="btn btn-info right"> Update </button>
 </form>
-<form method="post" action="/event/delete/{{event.id}}/">
+
+<form method="post" action="{% url 'cal:event_delete' event.id %}">
   {% csrf_token %}
   <button type="submit" class="btn btn-info right"> Delete </button>
 </form>

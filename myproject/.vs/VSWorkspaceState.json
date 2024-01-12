@@ -2,10 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\cal",
+    "\\static",
+    "\\static\\cal",
+    "\\static\\cal\\css",
+    "\\static\\cal\\js",
     "\\templates",
     "\\templates\\cal",
     "\\Website"
   ],
-  "SelectedNode": "\\templates\\task_list.html",
+  "SelectedNode": "\\templates\\cal\\base.html",
   "PreviewInSolutionExplorer": false
 }
