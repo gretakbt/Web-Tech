@@ -1,8 +1,8 @@
-from datetime import datetime
-from datetime import date
+from datetime import timedelta, date, datetime 
 from datetime import timedelta, date, datetime as dt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseBadRequest
 from django.views import generic
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -48,24 +48,62 @@ def show_day(request, month, year, day):
 
 def get_date(req_day):
     if req_day:
-        year, month = (int(x) for x in req_day.split('-'))
-        return date(year, month, day=1)
+        try:
+            year, month = map(int, req_day.split('-'))
+            return date(year, month, day=1)
+        except ValueError:
+            pass
     return datetime.today()
 
 def event(request, event_id=None):
     instance = Event()
+
     if event_id:
         instance = get_object_or_404(Event, pk=event_id)
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cal:calendar'))
     else:
-        instance = Event()
-        form = EventForm(request.POST or None, instance=instance)
-        return render(request, 'cal/edit_event.html', {'form': form})
-    
-    form = EventForm(request.POST or None, instance=instance)
-    if request.POST and form.is_valid():
-        form.save()
-        return HttpResponseRedirect(reverse('cal:calendar'))
-    return render(request, 'cal/edit_event.html', {'form': form})
+        form = EventForm(instance=instance)
+
+    context = {
+        'form': form,
+        'event': instance,
+    }
+
+    return render(request, 'cal/edit_event.html', context)
+
+def event_new(request):
+    start_time = dt.strptime(request.POST['start_time'],"%Y-%m-%dT%H:%M")
+    end_time = dt.strptime(request.POST['end_time'],"%Y-%m-%dT%H:%M")
+    Event.objects.create(title=request.POST['title'], description=request.POST['description'], start_time=start_time, end_time=end_time, bg_color=request.POST['bg_color'])
+    return redirect(reverse('cal:calendar'))
+
+def event_edit(request, event_id):
+    instance = get_object_or_404(Event, pk=event_id)
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cal:calendar'))
+    else:
+        form = EventForm(instance=instance)
+
+    context = {
+        'form': form,
+        'event': instance,
+    }
+
+    return render(request, 'cal/edit_event.html', context)
+
+def event_delete(request, event_id):
+    event = Event.objects.get(id=event_id)
+    event.delete()
+    return redirect('/calendar')
 
 def prev_month(d):
     first = d.replace(day=1)
@@ -79,17 +117,6 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
-
-def event_new(request):
-    start_time = dt.strptime(request.POST['start_time'],"%Y-%m-%dT%H:%M")
-    end_time = dt.strptime(request.POST['end_time'],"%Y-%m-%dT%H:%M")
-    Event.objects.create(title=request.POST['title'], description=request.POST['description'], start_time=start_time, end_time=end_time, bg_color=request.POST['bg_color'])
-    return redirect('/calendar')
-
-def event_delete(request, event_id):
-    event = Event.objects.get(id=event_id)
-    event.delete()
-    return redirect('/calendar')
 
 def yearly_view(request):
     context={
