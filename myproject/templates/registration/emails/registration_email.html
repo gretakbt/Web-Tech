@@ -3,11 +3,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Willkommen bei unserer Webseite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .red-text {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <p>Hallo {{ user.username }},</p>
+    <p>Hallo {{ user.username }}!</p>
     <p>Vielen Dank für die Registrierung bei unserer Webseite.</p>
     <p>Dein Konto wurde erfolgreich erstellt.</p>
+    <p class="red-text">Falls du dich nicht mit dieser Email bei uns registriert hast, lass uns dies bitte umgehend wissen!</p>
     <p>Mit freundlichen Grüßen,<br>Das Team</p>
 </body>
 </html>
+
