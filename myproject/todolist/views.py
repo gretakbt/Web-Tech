@@ -31,6 +31,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages  # Hinzugefügter Import für Nachrichten
 from django.contrib.auth.models import User
+from django.utils.html import strip_tags
 
 
 
@@ -66,16 +67,17 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            email = form.cleaned_data['email']
+            ##email = form.cleaned_data['email']
               
-            text_content = render_to_string('registration/emails/registration_email.html')
+            html_content = render_to_string('registration/emails/registration_email.html', {'user': user})
+            text_content = strip_tags(html_content)
             subject = 'Willkommen neuer User'
-            recipient_list = [email]
+            recipient_list = [user.email]
             from_email = 'your-email@example.com'
-            send_mail(subject, text_content, from_email, recipient_list)   
+            send_mail(subject, text_content, from_email, recipient_list, html_message=html_content)   
             # Logge den Benutzer nach der Registrierung ein
             login(request, user)
-            return redirect('login')  # Ändere 'home' zu deiner Startseite
+            return redirect('login') 
     else:
         form = CustomUserCreationForm()
 
@@ -117,13 +119,14 @@ def reset_password(request):
     return render(request, 'registration/password_reset_form.html', {'form': form})
 
 
-def send_registration_email(user,template_path):
+#def send_registration_email(user,template_path):
     subject = 'Willkommen bei unserer Webseite'
-    text_content = render_to_string(template_path, {'user': user.username})
+    html_content = render_to_string(template_path, {'user': user.username})
+    text_content = strip_tags(html_content)
     from_email = 'your-email@example.com'
     recipient_list = [user.email]
 
-    send_mail(subject, text_content, from_email, recipient_list)
+    send_mail(subject, text_content, from_email, recipient_list)#
 
 
 
