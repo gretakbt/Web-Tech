@@ -32,6 +32,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages  # Hinzugefügter Import für Nachrichten
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
+from django.views.generic import TemplateView
 
 
 
@@ -87,8 +88,38 @@ def password_reset_done(request):
     return render(request, 'registration/password_reset_done.html') 
 def password_reset_confirm(request):
     return render(request, 'registration/password_reset_confirm.html') 
+class CustomPasswordResetDoneView(TemplateView):
+    template_name = 'registration/reset_complete_template.html'
 
 def reset_password(request):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = get_user_model().objects.get(email=email)
+
+            # Erzeuge einen Token für den Benutzer
+            token = default_token_generator.make_token(user)
+
+            # Erzeuge den Zurücksetzungslink
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            reset_url = request.build_absolute_uri(f'/reset/password/confirm/{uidb64}/{token}/')
+
+            email_context = {'user': user, 'reset_url': reset_url}
+            html_content = render_to_string('registration/emails/password_reset_email.html', email_context)    
+            text_content = strip_tags(html_content)
+            subject = 'Angeforderter Passwort-Reset'
+            from_email = 'your-email@example.com'
+            recipient_list = [email]
+            send_mail(subject, text_content, from_email, recipient_list, html_message=html_content)
+
+            return HttpResponseRedirect('/password_reset/done/')  # Beispielhafte Weiterleitung nach dem Versenden der E-Mail
+    else:
+        form = ResetPasswordForm()
+
+    return render(request, 'registration/password_reset_form.html', {'form': form})
+
+#def reset_password(request):
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
