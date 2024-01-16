@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,11 +28,21 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 from .forms import CustomUserCreationForm
 from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode
 from django.contrib import messages  # Hinzugefügter Import für Nachrichten
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
 
+#Calendar
+
+from datetime import timedelta, date, datetime 
+from datetime import timedelta, date, datetime as dt
+from django.utils.safestring import mark_safe
+import calendar
+
+from .models import *
+from .utils import Calendar
+from .forms import EventForm
 
 
 class CustomLoginView(LoginView):
@@ -41,7 +51,7 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        return reverse_lazy('tasks')
+        return reverse_lazy('calendar')
 
 
 # class RegisterPage(FormView):
@@ -129,26 +139,62 @@ def reset_password(request):
     send_mail(subject, text_content, from_email, recipient_list)#
 
 
+#GPT zusammenführen der beiden Funktionen zur Verwendung auf einer Website 
+class CombinedView(LoginRequiredMixin, ListView, View):
+    model_task = Task
+    model_event = Event
+    context_object_name_task = 'tasks'
+    context_object_name_event = 'events'
+    template_name = 'cal/calendar.html'
 
-class TaskList(LoginRequiredMixin, ListView):
-    model = Task
-    context_object_name = 'tasks'
-    template_name = 'task_list.html'
+    def get_date(self, month):
+        today = datetime.today()
+        if month:
+            month = int(month)
+            year = today.year
+            if month < 1 or month > 12:
+                month = today.month
+        else:
+            month = today.month
+            year = today.year
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tasks'] = context['tasks'].filter(user=self.request.user)
-        context['count'] = context['tasks'].filter(complete=False).count()
+        return datetime(year, month, 1)
 
-        search_input = self.request.GET.get('search-area') or ''
+    def prev_month(self, d):
+        first_day_of_month = d - timedelta(days=d.day - 1)
+        prev_month = first_day_of_month - timedelta(days=1)
+        return prev_month.strftime('%Y-%m')
+
+    def next_month(self, d):
+        _, days_in_month = calendar.monthrange(d.year, d.month)
+        last_day_of_month = d + timedelta(days=days_in_month - d.day + 1)
+        next_month = last_day_of_month + timedelta(days=1)
+        return next_month.strftime('%Y-%m')
+
+    def get(self, request, *args, **kwargs):
+        # TaskList logic
+        tasks = self.model_task.objects.filter(user=request.user)
+        count = tasks.filter(complete=False).count()
+        search_input = request.GET.get('search-area') or ''
         if search_input:
-            context['tasks'] = context['tasks'].filter(
-                title__contains=search_input)
+            tasks = tasks.filter(title__contains=search_input)
 
-        context['search_input'] = search_input
+        # CalendarView logic
+        d = self.get_date(request.GET.get('month', None))
+        cal = Calendar(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True)
 
-        return context
+        context = {
+            'tasks': tasks,
+            'count': count,
+            'search_input': search_input,
+            'calendar': mark_safe(html_cal),
+            'prev_month': self.prev_month(d),
+            'next_month': self.next_month(d),
+        }
 
+        return render(request, self.template_name, context)
+    
 
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
@@ -159,7 +205,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'complete']
-    success_url = reverse_lazy('tasks')
+    success_url = reverse_lazy('calendar')
     template_name = 'task_form.html'
 
     def form_valid(self, form):
@@ -170,13 +216,13 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'description', 'complete']
-    success_url = reverse_lazy('tasks')
+    success_url = reverse_lazy('calendar')
     template_name = 'task_form.html'
 
 class DeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
-    success_url = reverse_lazy('tasks')
+    success_url = reverse_lazy('calendar')
     template_name = 'task_confirm_delete.html'
     def get_queryset(self):
         owner = self.request.user
@@ -192,7 +238,7 @@ class TaskReorder(View):
             with transaction.atomic():
                 self.request.user.set_task_order(positionList)
 
-        return redirect(reverse_lazy('tasks'))
+        return redirect(reverse_lazy('calendar'))
 
 
 ##ab hier gruppenkonzept
@@ -250,7 +296,7 @@ def leave_group(request, group_id):
                 group_polls = group.group_polls.all()
                 group_polls.delete()
                 group.delete()
-        return redirect('tasks')  # Weiterleitung zur Startseite
+        return redirect('calendar')  # Weiterleitung zur Startseite
     else:
         # Benutzer ist nicht in der Gruppe, vielleicht eine Meldung anzeigen
         return redirect('group_detail', group_id=group_id)
@@ -275,3 +321,82 @@ def add_member(request, group_id):
 
     # Hier kannst du weitere Logik hinzufügen, wenn die Aktion nicht erfolgreich war
     return redirect('group_detail', group_id=group_id)
+
+
+
+# Create your views here.
+
+
+
+
+def show_day(request, month, year, day):
+    month_int = list(calendar.month_name).index(month)
+    context = {
+        'day': day,
+        'events_for_day': Event.objects.filter(start_time__day=day, start_time__year=year, start_time__month=month_int)
+    }
+    print(context['events_for_day'])
+    return render(request, 'cal/show_day.html', context)
+
+
+
+def event(request, event_id=None):
+    instance = Event()
+
+    if event_id:
+        instance = get_object_or_404(Event, pk=event_id)
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('calendar'))
+    else:
+        form = EventForm(instance=instance)
+
+    context = {
+        'form': form,
+        'event': instance,
+    }
+
+    return render(request, 'cal/edit_event.html', context)
+
+def event_new(request):
+    start_time = dt.strptime(request.POST['start_time'],"%Y-%m-%dT%H:%M")
+    end_time = dt.strptime(request.POST['end_time'],"%Y-%m-%dT%H:%M")
+    Event.objects.create(title=request.POST['title'], description=request.POST['description'], start_time=start_time, end_time=end_time, bg_color=request.POST['bg_color'])
+    return redirect(reverse('calendar'))
+
+def event_edit(request, event_id):
+    instance = get_object_or_404(Event, pk=event_id)
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('calendar'))
+    else:
+        form = EventForm(instance=instance)
+
+    context = {
+        'form': form,
+        'event': instance,
+    }
+
+    return render(request, 'cal/edit_event.html', context)
+
+def event_delete(request, event_id):
+    event = Event.objects.get(id=event_id)
+    event.delete()
+    return redirect('calendar')
+
+def yearly_view(request):
+    context={
+        'today': date.today()
+    }
+    return render (request, 'cal/yearly_view.html', context)
+
+def change_view(request):
+    month = request.POST['month']
+    year = request.POST['year']
+    return redirect(f"/calendar/?month={year}-{month}")

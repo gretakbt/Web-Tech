@@ -242,65 +242,6 @@ select {
   display: block;
 }
 
-/* Slide toggle for dark/light view */
-.theme-switch-wrapper {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 15px 15px 15px;
-}
-
-.theme-switch-wrapper em {
-  margin-left: 10px;
-  font-size: 1rem;
-}
-.theme-switch {
-  display: inline-block;
-  height: 33px;
-  position: relative;
-  width: 100px;
-}
-
-.theme-switch input {
-  display: none;
-}
-
-.slider-dark {
-  background-color: #ccc;
-  bottom: 0;
-  cursor: pointer;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: 0.4s;
-}
-
-.slider-dark:before {
-  background-color: #fff;
-  bottom: 4px;
-  content: "";
-  height: 26px;
-  left: 3px;
-  position: absolute;
-  transition: 0.5s;
-  width: 26px;
-}
-
-input:checked + .slider-dark {
-  background-color: #163864;
-}
-
-input:checked + .slider-dark:before {
-  transform: translateX(70px);
-}
-
-.slider-dark.round {
-  border-radius: 34px;
-}
-
-.slider-dark.round:before {
-  border-radius: 50%;
-}
 
 .month-specs {
   height: 250px;
@@ -339,3 +280,4 @@ input:checked + .slider-dark:before {
 #calendar-form{
   display: inline-block;
 }
+

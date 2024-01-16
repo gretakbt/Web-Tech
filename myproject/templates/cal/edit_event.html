@@ -6,7 +6,7 @@ Event
 
 {% block content %}
 <div class="clearfix">
-  <a class="btn btn-info left" href="{% url 'cal:calendar' %}"> Back To Calendar </a>
+  <a class="btn btn-info left" href="{% url 'calendar' %}"> Back To Calendar </a>
   <div class="theme-switch-wrapper">
     <label class="theme-switch" for="checkbox">
       <input type="checkbox" id="checkbox" />
@@ -31,7 +31,7 @@ Event
 {% endif %}
 
 
-<form method="post" action="{% url 'cal:event_edit' event.id %}" class="form">
+<form method="post" action="{% url 'event_edit' event.id %}" class="form">
   {% csrf_token %}
   <p class="muted-color">Title:</p>
   {{ form.title }}
@@ -56,7 +56,7 @@ Event
   <button type="submit" class="btn btn-info right"> Update </button>
 </form>
 
-<form method="post" action="{% url 'cal:event_delete' event.id %}">
+<form method="post" action="{% url 'event_delete' event.id %}">
   {% csrf_token %}
   <button type="submit" class="btn btn-info right"> Delete </button>
 </form>

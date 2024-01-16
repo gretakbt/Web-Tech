@@ -21,13 +21,11 @@ from  todolist import views as todolist_views
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 
-from cal import views as cal_views
 
-from todolist.views import GroupListView
 
 
 urlpatterns = [
- path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('polls/', poll_views.polls, name='polls'),
     path('group/<int:group_id>/create/', poll_views.create, name='create'),
     path('results/<poll_id>/', poll_views.results, name='results'),
@@ -41,7 +39,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     ##path('register/', todolist_views.RegisterPage.as_view(), name='register'),
     path('registration', todolist_views.register, name='register'), ##
-    path('', todolist_views.TaskList.as_view(), name='tasks'),
+    path('', todolist_views.CombinedView.as_view(), name='calendar'),
     path('task/<int:pk>/', todolist_views.TaskDetail.as_view(), name='task'),
     path('task-create/', todolist_views.TaskCreate.as_view(), name='task-create'),
     path('task-update/<int:pk>/', todolist_views.TaskUpdate.as_view(), name='task-update'),
@@ -52,9 +50,12 @@ urlpatterns = [
     path('create_group/', todolist_views.create_group, name='create_group'),
     path('group/<int:group_id>/leave/', todolist_views.leave_group, name='leave_group'),
     path('group/<int:group_id>/add_member/', todolist_views.add_member, name='add_member'),
-
-    path('', include('cal.urls'))
-
+    path('event/new/', todolist_views.event_new, name='event_new'),
+    path('event/edit/<int:event_id>/', todolist_views.event_edit, name='event_edit'),
+    path('event/delete/<int:event_id>/', todolist_views.event_delete, name='event_delete'),
+    path('day/(?P<month>\d+)/(?P<year>\d+)/(?P<day>\d+)/', todolist_views.show_day, name='show_day'),
+    path('yearly_view/', todolist_views.yearly_view, name='yearly_view'),
+    path('change_view/', todolist_views.change_view, name='change_view'),
 ]
 
 
