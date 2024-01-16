@@ -35,67 +35,66 @@
     <input type="hidden" name="month" id="selected_month" value="1">
 
     <p>Select Month: </p>
-    <div class="season d-flex justify-content-around">
-        <div class="month-specs" onclick="setSelectedMonth(1)">
-            <p class="centered">January</p>
-            <img class="monthly-pics" src="{% static 'img/jan_light.jpg' %}" alt="January">
-        </div>
-        <div class="month-specs" onclick="setSelectedMonth(2)">
-            <p class="centered">February</p>
-            <img class="monthly-pics" src="{% static 'img/feb_light.jpg' %}" alt="February">
-        </div>
-        <div class="month-specs" onclick="setSelectedMonth(3)">
-            <p class="centered">March</p>
-            <img class="monthly-pics" src="{% static 'img/march_light.jpg' %}" alt="March">
-        </div>
-        <div class="month-specs" onclick="setSelectedMonth(4)">
-            <p class="centered">April</p>
-            <img class="monthly-pics" src="{% static 'img/april_light.jpg' %}" alt="April">
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(5)">
-            <p class="centered">May</p>
-            <img class="monthly-pics" src="{% static 'img/may_light.jpg' %}" alt="May"
-                 data-alt-src="{% static 'img/may_dark.jpg' %}" data-alt="5">
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(6)">
-            <p class="centered">June</p>
-            <img class="monthly-pics" src="{% static 'img/june_light.jpg' %}" alt="June"
-                 data-alt-src="{% static 'img/june_dark.jpg' %}" data-alt="6">
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(7)">
-            <p class="centered">July</p>
-            <img class="monthly-pics" src="{% static 'img/july_light.jpg' %}" alt="July"
-                 data-alt-src="{% static 'img/july_dark.jpg' %}" data-alt="7">
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(8)">
-            <p class="centered">August</p>
-            <img class="monthly-pics" src="{% static 'img/aug_light.jpg' %}" alt="August"
-                 data-alt-src="{% static 'img/aug_dark.jpg' %}" data-alt="8">
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(9)">
-            <p class="centered">September</p>
-            <img class="monthly-pics" src="{% static 'img/sep_light.jpg' %}" alt="September"
-                 data-alt-src="{% static 'cal/img/sep_dark.jpg' %}" data-alt="9">
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(10)">
-            <p class="centered">October</p>
-            <img class="monthly-pics" src="{% static 'img/oct_light.jpg' %}" alt="October"
-                 data-alt-src="{% static 'img/oct_dark.jpg' %}" data-alt="10">
-
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(11)">
-            <p class="centered">November</p>
-            <img class="monthly-pics" src="{% static 'img/nov_light.jpg' %}" alt="November"
-                 data-alt-src="{% static 'img/nov_dark.jpg' %}" data-alt="11">
-
-        </div>
-        <div class="month-specs"onclick="setSelectedMonth(12)">
-            <p class="centered">December</p>
-            <img class="monthly-pics" src="{% static 'img/dec_light.jpg' %}" alt="December"
-                 data-alt-src="{% static 'img/dec_dark.jpg' %}" data-alt="12">
-
-        </div>
+    <div class="month-specs" onclick="setSelectedMonth(1)">
+        <p class="centered">January</p>
+        <img class="monthly-pics" src="{% static 'img/jan_light.jpg' %}" alt="January">
     </div>
+    <div class="month-specs" onclick="setSelectedMonth(2)">
+        <p class="centered">February</p>
+        <img class="monthly-pics" src="{% static 'img/feb_light.jpg' %}" alt="February">
+    </div>
+    <div class="month-specs" onclick="setSelectedMonth(3)">
+        <p class="centered">March</p>
+        <img class="monthly-pics" src="{% static 'img/march_light.jpg' %}" alt="March">
+    </div>
+    <div class="month-specs" onclick="setSelectedMonth(4)">
+        <p class="centered">April</p>
+        <img class="monthly-pics" src="{% static 'img/april_light.jpg' %}" alt="April">
+    </div>
+        <div class="month-specs"onclick="setSelectedMonth(5)">
+        <p class="centered">May</p>
+        <img class="monthly-pics" src="{% static 'img/may_light.jpg' %}" alt="May"
+                data-alt-src="{% static 'img/may_dark.jpg' %}" data-alt="5">
+    </div>
+    <div class="month-specs"onclick="setSelectedMonth(6)">
+        <p class="centered">June</p>
+        <img class="monthly-pics" src="{% static 'img/june_light.jpg' %}" alt="June"
+                data-alt-src="{% static 'img/june_dark.jpg' %}" data-alt="6">
+    </div>
+    <div class="month-specs"onclick="setSelectedMonth(7)">
+        <p class="centered">July</p>
+        <img class="monthly-pics" src="{% static 'img/july_light.jpg' %}" alt="July"
+                data-alt-src="{% static 'img/july_dark.jpg' %}" data-alt="7">
+    </div>
+    <div class="month-specs"onclick="setSelectedMonth(8)">
+        <p class="centered">August</p>
+        <img class="monthly-pics" src="{% static 'img/aug_light.jpg' %}" alt="August"
+                data-alt-src="{% static 'img/aug_dark.jpg' %}" data-alt="8">
+    </div>
+        <div class="month-specs"onclick="setSelectedMonth(9)">
+        <p class="centered">September</p>
+        <img class="monthly-pics" src="{% static 'img/sep_light.jpg' %}" alt="September"
+                data-alt-src="{% static 'cal/img/sep_dark.jpg' %}" data-alt="9">
+    </div>
+    <div class="month-specs"onclick="setSelectedMonth(10)">
+        <p class="centered">October</p>
+        <img class="monthly-pics" src="{% static 'img/oct_light.jpg' %}" alt="October"
+                data-alt-src="{% static 'img/oct_dark.jpg' %}" data-alt="10">
+
+    </div>
+    <div class="month-specs"onclick="setSelectedMonth(11)">
+        <p class="centered">November</p>
+        <img class="monthly-pics" src="{% static 'img/nov_light.jpg' %}" alt="November"
+                data-alt-src="{% static 'img/nov_dark.jpg' %}" data-alt="11">
+
+    </div>
+    <div class="month-specs"onclick="setSelectedMonth(12)">
+        <p class="centered">December</p>
+        <img class="monthly-pics" src="{% static 'img/dec_light.jpg' %}" alt="December"
+                data-alt-src="{% static 'img/dec_dark.jpg' %}" data-alt="12">
+
+    </div>
+
     <input type="hidden" name="month" value="1" id="yearly_view_month">
 
 </form>

@@ -5,15 +5,6 @@ Event
 {% endblock %}
 
 {% block content %}
-<div class="clearfix">
-  <a class="btn btn-info left" href="{% url 'calendar' %}"> Back To Calendar </a>
-  <div class="theme-switch-wrapper">
-    <label class="theme-switch" for="checkbox">
-      <input type="checkbox" id="checkbox" />
-      <div class="slider-dark round"></div>
-    </label>
-  </div>
-</div>
 
 {% if form.errors %}
   {% for field in form %}

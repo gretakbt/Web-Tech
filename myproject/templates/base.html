@@ -1,5 +1,3 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,7 +16,8 @@
                     h3,
                     h4,
                     h5,
-                    h6
+                    h6,
+                    button
                     {
                     font-family: 'Raleway', sans-serif;
                     }
@@ -34,6 +33,7 @@
                     .navbar-nav.navbar-right {
                          margin-left: auto;
                     }
+                    
                     .panel-heading{
                         background: linear-gradient(90deg, #EEA390 0%, #EB796F 43%, #EB796F 100%);
                     }
@@ -49,19 +49,9 @@
     </head>
     <body>
         <nav class="navbar navbar-default" role="navigation">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand" href="{% url 'calendar' %}">Homepage</a>
             </div>
-
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="{% url 'group' %}">Groups</a></li>
