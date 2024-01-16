@@ -33,7 +33,8 @@ urlpatterns = [
     path('polls/<int:poll_id>/delete/', poll_views.delete_poll, name='delete_poll'),
     path('accounts/login/', todolist_views.CustomLoginView.as_view(), name='login'),
     path('password_reset/', todolist_views.reset_password, name='reset password'),##
-    path('password_reset/done/', todolist_views.password_reset_done, name='password_reset_done'), ##
+    path('password_reset/done/', todolist_views.password_reset_done, name='password_reset_done'),
+    path('reset/password/complete/', todolist_views.CustomPasswordResetDoneView.as_view(), name='password_reset_complete'), ##
     ##path('password_reset/confirm/', password_reset_confirm, name='password_reset_confirm'),##
     path('reset/password/confirm/<str:uidb64>/<str:token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),##
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
