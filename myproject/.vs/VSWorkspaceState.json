@@ -1,15 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\cal",
-    "\\static",
-    "\\static\\cal",
-    "\\static\\cal\\css",
-    "\\static\\cal\\js",
     "\\templates",
     "\\templates\\cal",
+    "\\todolist",
     "\\Website"
   ],
-  "SelectedNode": "\\templates\\cal\\calendar.html",
+  "SelectedNode": "\\templates\\cal\\new_event.html",
   "PreviewInSolutionExplorer": false
 }

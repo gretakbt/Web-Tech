@@ -395,10 +395,27 @@ def event(request, event_id=None):
     return render(request, 'cal/edit_event.html', context)
 
 def event_new(request):
-    start_time = dt.strptime(request.POST['start_time'],"%Y-%m-%dT%H:%M")
-    end_time = dt.strptime(request.POST['end_time'],"%Y-%m-%dT%H:%M")
-    Event.objects.create(title=request.POST['title'], description=request.POST['description'], start_time=start_time, end_time=end_time, bg_color=request.POST['bg_color'])
-    return redirect(reverse('calendar'))
+    if request.method == 'POST':
+        # Verarbeiten Sie das Formular für ein neues Event
+        start_time = dt.strptime(request.POST['start_time'], "%Y-%m-%dT%H:%M")
+        end_time = dt.strptime(request.POST['end_time'], "%Y-%m-%dT%H:%M")
+        Event.objects.create(
+            title=request.POST['title'],
+            description=request.POST['description'],
+            start_time=start_time,
+            end_time=end_time,
+            bg_color=request.POST['bg_color']
+        )
+        return redirect(reverse('calendar'))
+    else:
+        # Anzeigen des Formulars für ein neues Event
+        form = EventForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'cal/new_event.html', context)
 
 def event_edit(request, event_id):
     instance = get_object_or_404(Event, pk=event_id)
