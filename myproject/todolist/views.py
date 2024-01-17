@@ -178,7 +178,6 @@ class CombinedView(LoginRequiredMixin, ListView, View):
     context_object_name_event = 'events'
     template_name = 'cal/calendar.html'
 
-    # Die restlichen Methoden hier belassen...
 
     def get_date(self, month):
         today = datetime.today()
@@ -187,7 +186,7 @@ class CombinedView(LoginRequiredMixin, ListView, View):
             if 1 <= month <= 12:
                 return datetime(year, month, 1)
         
-        # Fallback: Wenn der Monat ungültig ist, verwende den aktuellen Monat
+        #Wenn der Monat ungültig ist, verwende den aktuellen Monat
         return datetime(today.year, today.month, 1)
 
     def prev_month(self, d):
