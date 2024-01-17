@@ -37,7 +37,7 @@ COLOR_CHOICES = (
 )
 
 class Event(models.Model):
-
+    users = models.ManyToManyField(User, related_name='events')
     title = models.CharField(max_length=200)
     description = models.TextField()
     start_time = models.DateTimeField()

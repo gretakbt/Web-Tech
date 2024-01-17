@@ -212,7 +212,8 @@ class CombinedView(LoginRequiredMixin, ListView, View):
 
         # CalendarView logic
         d = self.get_date(request.GET.get('month', None))
-        cal = Calendar(d.year, d.month)
+        cal = Calendar(d.year, d.month, user=request.user)
+        events = Event.objects.filter(users=request.user)
         html_cal = cal.formatmonth(withyear=True)
 
         context = {
@@ -222,6 +223,7 @@ class CombinedView(LoginRequiredMixin, ListView, View):
             'calendar': mark_safe(html_cal),
             'prev_month': self.prev_month(d),
             'next_month': self.next_month(d),
+            'events': events,
         }
 
         return render(request, self.template_name, context)
@@ -362,9 +364,11 @@ def add_member(request, group_id):
 
 def show_day(request, month, year, day):
     month_int = list(calendar.month_name).index(month)
+    events_for_day = Event.objects.filter(users=request.user, start_time__day=day, start_time__year=year, start_time__month=month_int)
+
     context = {
         'day': day,
-        'events_for_day': Event.objects.filter(start_time__day=day, start_time__year=year, start_time__month=month_int)
+        'events_for_day': events_for_day
     }
     print(context['events_for_day'])
     return render(request, 'cal/show_day.html', context)
@@ -395,12 +399,13 @@ def event(request, event_id=None):
 def event_new(request):
     start_time = dt.strptime(request.POST['start_time'],"%Y-%m-%dT%H:%M")
     end_time = dt.strptime(request.POST['end_time'],"%Y-%m-%dT%H:%M")
-    Event.objects.create(title=request.POST['title'], description=request.POST['description'], start_time=start_time, end_time=end_time, bg_color=request.POST['bg_color'])
+    new_event=Event.objects.create(title=request.POST['title'], description=request.POST['description'], start_time=start_time, end_time=end_time, bg_color=request.POST['bg_color'])
+    new_event.users.add(request.user)
+
     return redirect(reverse('calendar'))
 
 def event_edit(request, event_id):
     instance = get_object_or_404(Event, pk=event_id)
-
     if request.method == 'POST':
         form = EventForm(request.POST, instance=instance)
         if form.is_valid():
