@@ -4,10 +4,11 @@
     <a class="btn btn-info" id="left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
     <form action="{% url 'calendar' %}" method="GET" id="calendar-form">
         {% csrf_token %}
-        <button type="submit" class="btn btn-info">Today</button>
+        <button type="submit" class="btn btn-info">This month</button>
     </form>
     <a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
 </div>
+
 
 <div class="theme-switch-wrapper">
     <a class="btn btn-info" id="add-event" data-toggle="modal" data-target="#exampleModal">
