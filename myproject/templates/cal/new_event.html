@@ -1,0 +1,30 @@
+{% extends 'cal/base.html' %}
+
+{% block title %}
+New Event
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'event_new' %}" class="form">
+    {% csrf_token %}
+    <p class="muted-color">Title:</p>
+    {{ form.title }}
+    <p class="muted-color">Description: </p>
+    {{ form.description }}
+    <div class="form-group">
+        <label for="start_time">Start Time: </label>
+        <input type="datetime-local" class="form-control" name="start_time">
+    </div>
+    <div class="form-group">
+        <label for="end_time">End Time: </label>
+        <input type="datetime-local" class="form-control" name="end_time">
+    </div>
+
+    <div class="form-group">
+        <p>Choose a color category for this event: </p>
+        {{ form.bg_color }}
+    </div>
+
+    <button type="submit" class="btn btn-info right"> Create Event </button>
+</form>
+{% endblock %}

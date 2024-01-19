@@ -22,7 +22,7 @@ Event
 {% endif %}
 
 
-<form method="post" action="{% url 'event_edit' event.id %}" class="form">
+<form method="post" action="{% url 'event_edit' event_id=event.id %}" class="form">
   {% csrf_token %}
   <p class="muted-color">Title:</p>
   {{ form.title }}
