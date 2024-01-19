@@ -178,29 +178,30 @@ class CombinedView(LoginRequiredMixin, ListView, View):
     context_object_name_event = 'events'
     template_name = 'cal/calendar.html'
 
+
     def get_date(self, month):
         today = datetime.today()
         if month:
-            month = int(month)
-            year = today.year
-            if month < 1 or month > 12:
-                month = today.month
-        else:
-            month = today.month
-            year = today.year
-
-        return datetime(year, month, 1)
+            year, month = map(int, month.split('-'))
+            if 1 <= month <= 12:
+                return datetime(year, month, 1)
+        
+        #Wenn der Monat ungültig ist, verwende den aktuellen Monat
+        return datetime(today.year, today.month, 1)
 
     def prev_month(self, d):
-        first_day_of_month = d - timedelta(days=d.day - 1)
-        prev_month = first_day_of_month - timedelta(days=1)
-        return prev_month.strftime('%Y-%m')
+        first = d.replace(day=1)
+        prev_month = first - timedelta(days=1)
+        month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
+        return month
 
     def next_month(self, d):
-        _, days_in_month = calendar.monthrange(d.year, d.month)
-        last_day_of_month = d + timedelta(days=days_in_month - d.day + 1)
-        next_month = last_day_of_month + timedelta(days=1)
-        return next_month.strftime('%Y-%m')
+        days_in_month = calendar.monthrange(d.year, d.month)[1]
+        last = d.replace(day=days_in_month)
+        next_month = last + timedelta(days=1)
+        month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
+        return month
+
 
     def get(self, request, *args, **kwargs):
         # TaskList logic
