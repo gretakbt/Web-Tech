@@ -38,6 +38,8 @@ class CreateGroupForm(forms.ModelForm):
 
 
 class EventForm(ModelForm):
+    
+
     class Meta:
         model = Event
         widgets = {
@@ -46,6 +48,13 @@ class EventForm(ModelForm):
 
         }
         fields = '__all__'
+
+    users = forms.ModelMultipleChoiceField(
+            queryset=User.objects.all(),
+            widget=forms.SelectMultiple(attrs={'autocomplete': 'off'}),
+            label="Participants",
+            required = False
+        )
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)

@@ -55,22 +55,6 @@ class CustomLoginView(LoginView):
         return reverse_lazy('calendar')
 
 
-# class RegisterPage(FormView):
- #   template_name = 'register.html'
-  #  form_class = UserCreationForm
-   # redirect_authenticated_user = True
-    #success_url = reverse_lazy('tasks')
-
-    #def form_valid(self, form):
-      #  user = form.save()
-     #   if user is not None:
-      #      login(self.request, user)
-       # return super(RegisterPage, self).form_valid(form)
-
-    #def get(self, *args, **kwargs):
-     #   if self.request.user.is_authenticated:
-      #      return redirect('tasks')
-       # return super(RegisterPage, self).get(*args, **kwargs)
 
 ##von Greta
 def register(request):
@@ -129,45 +113,6 @@ def reset_password(request):
 
     return render(request, 'registration/password_reset_form.html', {'form': form})
 
-#def reset_password(request):
-    if request.method == 'POST':
-        form = ResetPasswordForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            print("Email", email)
-            user = get_user_model().objects.get(email=email)
-            # Erzeuge einen Token für den Benutzer
-            print("User", user)
-            tokenu = default_token_generator.make_token(user)
-            print("Userpk", user.pk)
-            print("Token", tokenu)
-            uidb64 = force_str(user.pk)
-            ##uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            ##uidb64 = base64.urlsafe_b64encode(force_bytes(user.pk))
-            print("UIDB64 Manuell:", uidb64)
-            token = urlsafe_base64_encode(force_bytes(tokenu))
-            # Erzeuge den Zurücksetzungslink
-            reset_url = request.build_absolute_uri(f'/reset/password/confirm/{uidb64}/{token}/')
-            email_context = {'uidb64': uidb64, 'token': token, 'reset_url': reset_url}
-            text_content = render_to_string('registration/emails/password_reset_email.html', email_context)
-            subject = 'Angeforderter Passwort-Reset'
-            from_email = 'your-email@example.com'
-            recipient_list = [email]
-            send_mail(subject, text_content, from_email, recipient_list)
-            return HttpResponseRedirect('/password_reset/done/')  # Example redirection after sending the email
-    else:
-        form = ResetPasswordForm()
-    return render(request, 'registration/password_reset_form.html', {'form': form})
-
-
-#def send_registration_email(user,template_path):
-    subject = 'Willkommen bei unserer Webseite'
-    html_content = render_to_string(template_path, {'user': user.username})
-    text_content = strip_tags(html_content)
-    from_email = 'your-email@example.com'
-    recipient_list = [user.email]
-
-    send_mail(subject, text_content, from_email, recipient_list)#
 
 
 #GPT zusammenführen der beiden Funktionen zur Verwendung auf einer Website 
@@ -396,10 +341,15 @@ def event(request, event_id=None):
     }
 
     return render(request, 'cal/edit_event.html', context)
-
+from django.http import JsonResponse
+import json
 def event_new(request):
     if request.method == 'POST':
         # Verarbeiten Sie das Formular für ein neues Event
+        
+        participant_ids = request.POST.getlist('users')  # Wenn es mehrere ausgewählte Teilnehmer gibt
+
+        users = User.objects.filter(id__in=participant_ids)
         start_time = dt.strptime(request.POST['start_time'], "%Y-%m-%dT%H:%M")
         end_time = dt.strptime(request.POST['end_time'], "%Y-%m-%dT%H:%M")
         Event.objects.create(
@@ -408,14 +358,17 @@ def event_new(request):
             start_time=start_time,
             end_time=end_time,
             bg_color=request.POST['bg_color']
-        )
+            
+        ).users.set(users)
         return redirect(reverse('calendar'))
     else:
         # Anzeigen des Formulars für ein neues Event
         form = EventForm()
-
+    
+    
     context = {
         'form': form,
+       
     }
 
     return render(request, 'cal/new_event.html', context)
@@ -428,7 +381,8 @@ def event_edit(request, event_id):
             form.save()
             return HttpResponseRedirect(reverse('calendar'))
     else:
-        form = EventForm(instance=instance)
+        users = instance.users.values_list('id', flat=True)
+        form = EventForm(instance=instance, initial={'participants': users})
 
     context = {
         'form': form,
