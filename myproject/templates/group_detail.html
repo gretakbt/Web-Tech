@@ -64,4 +64,13 @@
         </div>
     </div>
 </div>
+<div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+   
+    <form method="post" action="{% url 'display_events' group_id=group.id %}">
+        {% csrf_token %}
+        <input type="date" name="selected_date">
+        <button type="submit">Find time slot</button>
+    </form>
+</div>
+
 {% endblock %}

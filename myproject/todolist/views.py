@@ -406,3 +406,19 @@ def change_view(request):
     month = request.POST['month']
     year = request.POST['year']
     return redirect(f"/calendar/?month={year}-{month}")
+
+# In deiner views.py Datei
+from django.http import HttpResponse
+
+def display_events(request, group_id):
+    if request.method == 'POST':
+        selected_date = request.POST.get('selected_date')
+        group = get_object_or_404(Group, pk=group_id)
+        events = Event.objects.filter(users__in=group.members.all(), start_time__date=selected_date)
+        
+        for event in events:
+            print(event.title)
+        
+        return redirect('group_detail', group_id=group_id)
+
+    return HttpResponse("Invalid request")
