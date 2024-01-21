@@ -1,18 +1,4 @@
-"""poll_project URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 
@@ -34,11 +20,9 @@ urlpatterns = [
     path('accounts/login/', todolist_views.CustomLoginView.as_view(), name='login'),
     path('password_reset/', todolist_views.reset_password, name='reset password'),##
     path('password_reset/done/', todolist_views.password_reset_done, name='password_reset_done'),
-    path('reset/password/complete/', todolist_views.CustomPasswordResetDoneView.as_view(), name='password_reset_complete'), ##
-    ##path('password_reset/confirm/', password_reset_confirm, name='password_reset_confirm'),##
+    path('reset/password/complete/', todolist_views.CustomPasswordResetDoneView.as_view(), name='password_reset_complete'), 
     path('reset/password/confirm/<str:uidb64>/<str:token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),##
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    ##path('register/', todolist_views.RegisterPage.as_view(), name='register'),
     path('registration', todolist_views.register, name='register'), ##
     path('', todolist_views.CombinedView.as_view(), name='calendar'),
     path('task/<int:pk>/', todolist_views.TaskDetail.as_view(), name='task'),

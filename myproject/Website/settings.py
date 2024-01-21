@@ -126,13 +126,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'todolist/static'),
 ]
-##Gretas Email
 
+#Ab hier Email-Versand nach lesen von https://stackoverflow.com/questions/6367014/how-to-send-email-via-django und hilfe von chat-gpt
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'webtechplanner@gmail.com'
 EMAIL_HOST_PASSWORD = 'xxtf kmmo wgau cojt'
+#Bis hier Email-Versand
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

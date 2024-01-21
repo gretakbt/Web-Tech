@@ -5,14 +5,13 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, DateInput
 from .models import *
 
-# Reordering Form and View
 
 
 class PositionForm(forms.Form):
     position = forms.CharField()
 
-#Greta
-class ResetPasswordForm(forms.Form): 
+
+class ResetPasswordForm(forms.Form): #eigene Anpassung
     email = forms.EmailField()
 
 class CustomUserCreationForm(UserCreationForm):
@@ -22,7 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
     
-    def clean_email(self):
+    def clean_email(self):   #eigene Anpassung Emailversand                   
         email = self.cleaned_data.get('email')
         email_lower = email.lower()
         if User.objects.filter(email__iexact=email_lower).exists():
@@ -30,7 +29,7 @@ class CustomUserCreationForm(UserCreationForm):
         return email
 
 
-class CreateGroupForm(forms.ModelForm):
+class CreateGroupForm(forms.ModelForm): #copy und paste plus Anpassung aus voherig existierenden forms
     class Meta:
         model = Group
         fields = ['name']

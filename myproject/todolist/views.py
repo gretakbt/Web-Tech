@@ -33,6 +33,7 @@ from django.contrib import messages  # Hinzugefügter Import für Nachrichten
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
+from django.http import HttpResponse
 
 #Calendar
 
@@ -56,8 +57,8 @@ class CustomLoginView(LoginView):
 
 
 
-##von Greta
-def register(request):
+# von hier login System unter Anleitung von https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication mit Erweiterung von Email-Versand durch Chat gpt
+def register(request):   
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -69,7 +70,7 @@ def register(request):
             subject = 'Willkommen neuer User'
             recipient_list = [user.email]
             from_email = 'your-email@example.com'
-            send_mail(subject, text_content, from_email, recipient_list, html_message=html_content)   
+            send_mail(subject, text_content, from_email, recipient_list, html_message=html_content)    
             # Logge den Benutzer nach der Registrierung ein
             login(request, user)
             return redirect('login') 
@@ -92,12 +93,10 @@ def reset_password(request):
             email = form.cleaned_data['email']
             user = get_user_model().objects.get(email=email)
 
-            # Erzeuge einen Token für den Benutzer
             token = default_token_generator.make_token(user)
 
-            # Erzeuge den Zurücksetzungslink
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            reset_url = request.build_absolute_uri(f'/reset/password/confirm/{uidb64}/{token}/')
+            reset_url = request.build_absolute_uri(f'/reset/password/confirm/{uidb64}/{token}/') #Anpassung Reset-Link mit Hilfe von Chat-gpt
 
             email_context = {'user': user, 'reset_url': reset_url}
             html_content = render_to_string('registration/emails/password_reset_email.html', email_context)    
@@ -107,13 +106,13 @@ def reset_password(request):
             recipient_list = [email]
             send_mail(subject, text_content, from_email, recipient_list, html_message=html_content)
 
-            return HttpResponseRedirect('/password_reset/done/')  # Beispielhafte Weiterleitung nach dem Versenden der E-Mail
+            return HttpResponseRedirect('/password_reset/done/')  
     else:
         form = ResetPasswordForm()
 
-    return render(request, 'registration/password_reset_form.html', {'form': form})
+    return render(request, 'registration/password_reset_form.html', {'form': form})         
 
-
+# bis hier login System unter Anleitung von https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication mit Erweiterung von Email-Versand durch Chat gpt
 
 #GPT zusammenführen der beiden Funktionen zur Verwendung auf einer Website 
 class CombinedView(LoginRequiredMixin, ListView, View):
@@ -220,7 +219,7 @@ class TaskReorder(View):
         return redirect(reverse_lazy('calendar'))
 
 
-##ab hier gruppenkonzept
+#Ab hier gesamtes Gruppenkonzept mit Chatgpt und Anpassung in das bestehende Projekt (Projezieren der Element auf Gruppenseiten)
     
 class GroupListView(LoginRequiredMixin, ListView):
     model = Group
@@ -260,30 +259,24 @@ def create_group(request):
     return render(request, 'create_group.html', context)
 
 
-
-
 def leave_group(request, group_id):
     group = Group.objects.get(pk=group_id)
     user = request.user
     
-    # Überprüfen, ob der Benutzer in der Gruppe ist, bevor er sie verlässt
     if user in group.members.all():
         group.members.remove(user)
         if group.members.count() == 0:
              with transaction.atomic():
-                # Lösche alle zugehörigen Umfragen (Polls)
                 group_polls = group.group_polls.all()
                 group_polls.delete()
                 group.delete()
         return redirect('calendar')  # Weiterleitung zur Startseite
     else:
-        # Benutzer ist nicht in der Gruppe, vielleicht eine Meldung anzeigen
         return redirect('group_detail', group_id=group_id)
 
 
 def add_member(request, group_id):
     if request.method == 'POST':
-        # Benutzername aus dem Formular abrufen
         username = request.POST.get('username', '')
 
         try:
@@ -298,15 +291,9 @@ def add_member(request, group_id):
         except User.DoesNotExist:
             messages.error(request, f'User "{username}" not found.')
 
-    # Hier kannst du weitere Logik hinzufügen, wenn die Aktion nicht erfolgreich war
     return redirect('group_detail', group_id=group_id)
 
-
-
-# Create your views here.
-
-
-
+#bis hier gesamtes Gruppenkonzept mit Chatgpt und Anpassung in das bestehende Projekt
 
 def show_day(request, month, year, day):
     month_int = list(calendar.month_name).index(month)
@@ -341,13 +328,12 @@ def event(request, event_id=None):
     }
 
     return render(request, 'cal/edit_event.html', context)
+
 from django.http import JsonResponse
 import json
 def event_new(request):
-    if request.method == 'POST':
-        # Verarbeiten Sie das Formular für ein neues Event
-        
-        participant_ids = request.POST.getlist('users')  # Wenn es mehrere ausgewählte Teilnehmer gibt
+    if request.method == 'POST':      
+        participant_ids = request.POST.getlist('users')  # eigene Anpassung, damit Events Usern zugeordnet werden können 
 
         users = User.objects.filter(id__in=participant_ids)
         start_time = dt.strptime(request.POST['start_time'], "%Y-%m-%dT%H:%M")
@@ -382,7 +368,7 @@ def event_edit(request, event_id):
             return HttpResponseRedirect(reverse('calendar'))
     else:
         users = instance.users.values_list('id', flat=True)
-        form = EventForm(instance=instance, initial={'participants': users})
+        form = EventForm(instance=instance, initial={'participants': users}) # eigene Anpassung, damit Events Usern zugeordnet werden können 
 
     context = {
         'form': form,
@@ -407,8 +393,6 @@ def change_view(request):
     year = request.POST['year']
     return redirect(f"/calendar/?month={year}-{month}")
 
-# In deiner views.py Datei
-from django.http import HttpResponse
 
 def display_events(request, group_id):
     if request.method == 'POST':

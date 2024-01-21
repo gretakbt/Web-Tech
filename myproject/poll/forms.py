@@ -9,7 +9,6 @@ class CreatePollForm(ModelForm):
         fields = ['question', 'option_one', 'option_two', 'option_three', 'group']
         
 
-        ##group = forms.ModelChoiceField(queryset=Group.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
     def __init__(self, *args, **kwargs):
         group_id = kwargs.pop('group_id', None)
         super(CreatePollForm, self).__init__(*args, **kwargs)

@@ -18,6 +18,7 @@ class Task(models.Model):
     class Meta:
         order_with_respect_to = 'user'
 
+# ab hier erstellen von Group Model unter zuhilfenahme von der Django Dokumentation https://docs.djangoproject.com/en/5.0/topics/db/models/
 class Group(models.Model):
     name = models.CharField(max_length=100)
     members = models.ManyToManyField(User, related_name='group_memberships')
@@ -25,9 +26,8 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+# bis hier erstellen von Group Model unter zuhilfenahme von der Django Dokumentation https://docs.djangoproject.com/en/5.0/topics/db/models/
     
-
-
 COLOR_CHOICES = (
     ('#5549A3', 'Purple'),
     ('#6d6c6c', 'Grey'),

@@ -9,7 +9,7 @@ from .forms import CreatePollForm
 from .models import Poll
 from todolist.models import Group
 
-#alle angepasst um Gruppen zu ermöglichen
+# Ab hier wo sind polls her @julius + eigene Anpassung an Gruppenkonzept
 def polls(request):
     group = request.user.groups.first()
     polls = Poll.objects.filter(group=group)
@@ -24,22 +24,13 @@ def create(request,group_id):
         form = CreatePollForm(request.POST, group_id=group_id)
 
         if form.is_valid():
-           
-        
-            # Weise die Gruppe der Umfrage zu und speichere sie
-            form.instance.group = Group.objects.get(id=group_id)
+
+            form.instance.group = Group.objects.get(id=group_id) #hier Hilfe von Chat-gpt
             form.save()
             return redirect('group_detail', group_id=group_id)
-            ##new_poll = form.save(commit=False)
-
-            # Extrahiere die Gruppe direkt aus dem Formular
-            ##group = new_poll.group
-
-            # Speichere das Poll-Objekt
+            
             new_poll.save()
 
-            # Leite zur Gruppendetailansicht weiter
-            ##return redirect('group_detail', group_id=group.id)
     else:
         form = CreatePollForm(group_id=group_id)
 
@@ -94,4 +85,4 @@ def delete_poll(request, poll_id):
     # Falls das Formular nicht gesendet wurde, render die Seite normal (hier könnte man auch eine Fehlermeldung anzeigen)
     return render(request, 'group.html', {'poll': poll})
 
-
+#Bis hier wo sind polls her @julius + eigene Anpassung an Gruppenkonzept
