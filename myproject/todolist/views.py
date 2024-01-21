@@ -45,7 +45,7 @@ import calendar
 from .models import *
 from .utils import Calendar
 from .forms import EventForm
-
+from django.db.models import Q
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
@@ -232,15 +232,25 @@ class GroupListView(LoginRequiredMixin, ListView):
     
 
 def group_detail(request, group_id):
-    group = Group.objects.get(pk=group_id)
+    group = get_object_or_404(Group, pk=group_id)
 
-    
     if request.user in group.members.all():
         polls = Poll.objects.filter(group=group)
-        return render(request, 'group_detail.html', {'group': group, 'polls': polls})
-    else:
         
-        return redirect('group')  # Hier kannst du den Pfad anpassen
+        # Füge die folgenden Zeilen für die gemeinsamen Events hinzu
+        common_events = Event.objects.filter(users=request.user, start_time__gte=datetime.now())
+        for member in group.members.all():
+            common_events = common_events.filter(users=member)
+
+        context = {
+            'group': group,
+            'polls': polls,
+            'common_events': common_events,
+        }
+
+        return render(request, 'group_detail.html', context)
+    else:
+        return redirect('group_detail')
     
 def create_group(request):
     if request.method == 'POST':
@@ -399,10 +409,29 @@ def display_events(request, group_id):
         selected_date = request.POST.get('selected_date')
         group = get_object_or_404(Group, pk=group_id)
         events = Event.objects.filter(users__in=group.members.all(), start_time__date=selected_date)
+
+        available_time_ranges = get_available_time_ranges(group, selected_date, events)
         
-        for event in events:
-            print(event.title)
-        
-        return redirect('group_detail', group_id=group_id)
+        return render(request, 'timeslots.html', {'available_time_ranges': available_time_ranges, 'group_id': group_id})
 
     return HttpResponse("Invalid request")
+
+  
+def get_available_time_ranges(group, selected_date, events):
+    available_time_ranges = []
+    current_time = datetime.strptime(selected_date, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
+
+    for event in events:
+        start_time = event.start_time.replace(tzinfo=None)
+        end_time = event.end_time.replace(tzinfo=None)
+
+        if current_time < start_time:
+            available_time_ranges.append((current_time.time(), start_time.time()))
+
+        current_time = max(current_time, end_time)
+
+    end_of_day = datetime.strptime(selected_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+    if current_time < end_of_day:
+        available_time_ranges.append((current_time.time(), end_of_day.time()))
+
+    return available_time_ranges

@@ -1,11 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\lib\\python3.12",
+    "\\lib\\python3.12\\site-packages",
+    "\\lib\\python3.12\\site-packages\\pip",
     "\\templates",
     "\\templates\\cal",
     "\\todolist",
     "\\Website"
   ],
-  "SelectedNode": "\\templates\\cal\\new_event.html",
+  "SelectedNode": "\\todolist\\views.py",
   "PreviewInSolutionExplorer": false
 }

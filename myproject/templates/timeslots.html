@@ -1,0 +1,23 @@
+<!-- available_time_ranges.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Time Ranges</title>
+</head>
+<body>
+    <h1>Available Time Ranges</h1>
+
+    {% if available_time_ranges %}
+    <ul>
+        {% for time_range in available_time_ranges %}
+        <li>{{ time_range.0 }} - {{ time_range.1 }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No available time ranges.</p>
+    {% endif %}
+</body>
+</html>

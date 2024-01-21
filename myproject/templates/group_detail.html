@@ -11,9 +11,9 @@
         align-items: center;
     }
 
-    .button-container .btn {
-        margin-left: 5px;
-    }
+        .button-container .btn {
+            margin-left: 5px;
+        }
 </style>
 <!--angepasst-->
 <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
@@ -28,22 +28,25 @@
     </form>
     {% if messages %}
     <ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {{ message }}</li>
+            {% endfor %}
     </ul>
     {% endif %}
 </div>
 <div class="row">
-    <div class="col-lg-4 col-lg-offset-0"> <!--angepasst-->
+    <div class="col-lg-4 col-lg-offset-0">
+        <!--angepasst-->
         <div class="panel panel-default">
-            <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;"> <!--angepasst gpt-->
+            <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+                <!--angepasst gpt-->
                 <div class="panel-title">
                     <h2>Available Polls</h2>
-                  </div>
-                <a href="{% url 'create' group_id=group.id %}" class="btn btn-default btn-xs"style="align-self: flex-start;">Create new Poll</a> <!--Angepasst-->
+                </div>
+                <a href="{% url 'create' group_id=group.id %}" class="btn btn-default btn-xs" style="align-self: flex-start;">Create new Poll</a> <!--Angepasst-->
             </div>
-                
+
             <ul class="list-group">
                 {% for poll in polls %}
                 <!--angepasst-->
@@ -65,12 +68,28 @@
     </div>
 </div>
 <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
-   
-    <form method="post" action="{% url 'display_events' group_id=group.id %}">
+    <form method="post" action="{% url 'find_timeslots' group_id=group.id %}" id="findTimeSlotForm">
         {% csrf_token %}
-        <input type="date" name="selected_date">
+        <input type="date" name="selected_date" id="selectedDate">
         <button type="submit">Find time slot</button>
     </form>
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>Events</h2>
+    </div>
+    <ul class="list-group">
+        {% for event in common_events %}
+        <li class="list-group-item">{{ event.title }} - {{ event.start_time }} to {{ event.end_time }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+
+
 
 {% endblock %}

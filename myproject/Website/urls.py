@@ -41,7 +41,9 @@ urlpatterns = [
     path('day/(?P<month>\d+)/(?P<year>\d+)/(?P<day>\d+)/', todolist_views.show_day, name='show_day'),
     path('yearly_view/', todolist_views.yearly_view, name='yearly_view'),
     path('change_view/', todolist_views.change_view, name='change_view'),
-    path('display_events/<int:group_id>/', todolist_views.display_events, name='display_events'),
+    path('find_timeslots/<int:group_id>/', todolist_views.display_events, name='find_timeslots'),
+    path('group/<int:group_id>/', todolist_views.group_detail, name='group_detail'),
+
 ]
 
 
