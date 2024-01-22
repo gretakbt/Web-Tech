@@ -5,67 +5,69 @@ Event
 {% endblock %}
 
 {% block content %}
-
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html -->
 {% if form.errors %}
   {% for field in form %}
     {% for error in field.errors %}
-      <div class="alert alert-danger">
-        {{ field.label }} <strong>{{ error|escape }}</strong>
-      </div>
+<div class="alert alert-danger">
+    {{ field.label }} <strong>{{ error|escape }}</strong>
+</div>
     {% endfor %}
   {% endfor %}
   {% for error in form.non_field_errors %}
-    <div class="alert alert-danger">
-      {{ error|escape }}
-    </div>
+<div class="alert alert-danger">
+    {{ error|escape }}
+</div>
   {% endfor %}
 {% endif %}
-
-
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html -->
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit GBT-->
 <form method="post" action="{% url 'event_edit' event_id=event.id %}" class="form">
-  {% csrf_token %}
-  <p class="muted-color">Title:</p>
-  {{ form.title }}
-  <p class="muted-color">Description: </p>
-  {{ form.description }}
-  <div class="form-group">
-    <label for="start_time">Start Time: </label>
-    <input type="datetime-local" class="form-control" name="start_time" value="{{ event.start_time|date:'Y-m-d\TH:i' }}">
-  </div>
-  <div class="form-group">
-    <label for="end_time">End Time: </label>
-    <input type="datetime-local" class="form-control" name="end_time" value="{{ event.end_time|date:'Y-m-d\TH:i' }}">
-  </div>
+    {% csrf_token %}
+    <p class="muted-color">Title:</p>
+    {{ form.title }}
+    <p class="muted-color">Description: </p>
+    {{ form.description }}
+    <div class="form-group">
+        <label for="start_time">Start Time: </label>
+        <input type="datetime-local" class="form-control" name="start_time" value="{{ event.start_time|date:'Y-m-d\TH:i' }}">
+    </div>
+    <div class="form-group">
+        <label for="end_time">End Time: </label>
+        <input type="datetime-local" class="form-control" name="end_time" value="{{ event.end_time|date:'Y-m-d\TH:i' }}">
+    </div>
 
-  <div class="form-group">
-    <label for="participants">Participants: </label>
-    {{ form.users }}
-</div>
+    <div class="form-group">
+        <label for="participants">Participants: </label>
+        {{ form.users }}
+    </div>
 
 
-  <div class="form-group">
-    <p>Choose a color category for this event: </p>
-    {{ form.bg_color }}
-    
-  </div>
-  
+    <div class="form-group">
+        <p>Choose a color category for this event: </p>
+        {{ form.bg_color }}
 
-  <button type="submit" class="btn btn-info right"> Update </button>
+    </div>
+
+
+    <button type="submit" class="btn btn-info right"> Update </button>
 </form>
 
 <form method="post" action="{% url 'event_delete' event.id %}">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-info right"> Delete </button>
+    {% csrf_token %}
+    <button type="submit" class="btn btn-info right"> Delete </button>
 </form>
-
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit GBT-->
+<!--angepasst GPT-->
 {% if form.errors %}
-  <div class="alert alert-danger">
+<div class="alert alert-danger">
     <strong>Form errors:</strong>
     <ul>
-      {% for error in form.errors %}
+        {% for error in form.errors %}
         <li>{{ error }}</li>
-      {% endfor %}
+        {% endfor %}
     </ul>
-  </div>
+</div>
+<!--angepasst GPT-->
 {% endif %}
 {% endblock %}

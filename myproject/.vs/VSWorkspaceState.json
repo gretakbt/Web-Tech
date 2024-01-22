@@ -1,9 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\lib\\python3.12",
-    "\\lib\\python3.12\\site-packages",
-    "\\lib\\python3.12\\site-packages\\pip",
     "\\templates",
     "\\templates\\cal",
     "\\todolist",

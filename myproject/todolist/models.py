@@ -27,7 +27,9 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 # bis hier erstellen von Group Model unter zuhilfenahme von der Django Dokumentation https://docs.djangoproject.com/en/5.0/topics/db/models/
-    
+
+
+# Aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
 COLOR_CHOICES = (
     ('#5549A3', 'Purple'),
     ('#6d6c6c', 'Grey'),
@@ -36,7 +38,7 @@ COLOR_CHOICES = (
     ('#179213', 'Green'),
 )
 
-class Event(models.Model):
+class Event(models.Model): # Klasse aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit Anpassung der User
     users = models.ManyToManyField(User, related_name='events')
     title = models.CharField(max_length=200)
     description = models.TextField()

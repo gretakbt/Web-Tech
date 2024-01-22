@@ -1,5 +1,7 @@
 {% extends 'cal/base.html' %}
 {% block content %}
+
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit GBT-->
 <div class="clearfix">
     <a class="btn btn-info" id="left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
     <form action="{% url 'calendar' %}" method="GET" id="calendar-form">
@@ -8,8 +10,10 @@
     </form>
     <a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
 </div>
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit GBT-->
 
 
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html -->
 <div class="theme-switch-wrapper">
     <a class="btn btn-info" href="{% url 'event_new' %}"> New Event </a>
     <form action="{% url 'yearly_view' %}" method="GET">
@@ -18,6 +22,8 @@
     </form>
 
 </div>
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html -->
+
 
 <div class="wrapper">
     <div class="left-col">

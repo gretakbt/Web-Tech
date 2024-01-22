@@ -36,7 +36,7 @@ class CreateGroupForm(forms.ModelForm): #copy und paste plus Anpassung aus voher
 
 
 
-class EventForm(ModelForm):
+class EventForm(ModelForm): # Klasse aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit Anpassung der User
     
 
     class Meta:

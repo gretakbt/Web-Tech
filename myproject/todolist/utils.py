@@ -2,7 +2,7 @@ from calendar import HTMLCalendar
 from .models import *
 from django.contrib.auth import get_user_model
 
-class Calendar(HTMLCalendar):
+class Calendar(HTMLCalendar): # Klasse aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit Anpassung der User
     def __init__(self, year=None, month=None, user=None):
         self.year = year
         self.month = month

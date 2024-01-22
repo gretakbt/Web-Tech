@@ -2,9 +2,10 @@
 {% load static %}
 
 {% block content %}
-
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit GBT-->
 <div class="theme-switch-wrapper" id="yearly_view_top">
-    <form action="{% url 'calendar' %}" method="GET"><!--angepasst-->
+    <form action="{% url 'calendar' %}" method="GET">
+        <!--angepasst-->
         {% csrf_token %}
         <button type="submit" class="btn btn-info">Back To {{today | date:'M Y'}}</button>
     </form>
@@ -51,37 +52,37 @@
         <p class="centered">April</p>
         <img class="monthly-pics" src="{% static 'img/april_light.jpg' %}" alt="April">
     </div>
-        <div class="month-specs"onclick="setSelectedMonth(5)">
+    <div class="month-specs" onclick="setSelectedMonth(5)">
         <p class="centered">May</p>
         <img class="monthly-pics" src="{% static 'img/may_light.jpg' %}" alt="May">
     </div>
-    <div class="month-specs"onclick="setSelectedMonth(6)">
+    <div class="month-specs" onclick="setSelectedMonth(6)">
         <p class="centered">June</p>
         <img class="monthly-pics" src="{% static 'img/june_light.jpg' %}" alt="June">
     </div>
-    <div class="month-specs"onclick="setSelectedMonth(7)">
+    <div class="month-specs" onclick="setSelectedMonth(7)">
         <p class="centered">July</p>
         <img class="monthly-pics" src="{% static 'img/july_light.jpg' %}" alt="July">
     </div>
-    <div class="month-specs"onclick="setSelectedMonth(8)">
+    <div class="month-specs" onclick="setSelectedMonth(8)">
         <p class="centered">August</p>
         <img class="monthly-pics" src="{% static 'img/aug_light.jpg' %}" alt="August">
     </div>
-        <div class="month-specs"onclick="setSelectedMonth(9)">
+    <div class="month-specs" onclick="setSelectedMonth(9)">
         <p class="centered">September</p>
         <img class="monthly-pics" src="{% static 'img/sep_light.jpg' %}" alt="September">
     </div>
-    <div class="month-specs"onclick="setSelectedMonth(10)">
+    <div class="month-specs" onclick="setSelectedMonth(10)">
         <p class="centered">October</p>
         <img class="monthly-pics" src="{% static 'img/oct_light.jpg' %}" alt="October">
 
     </div>
-    <div class="month-specs"onclick="setSelectedMonth(11)">
+    <div class="month-specs" onclick="setSelectedMonth(11)">
         <p class="centered">November</p>
         <img class="monthly-pics" src="{% static 'img/nov_light.jpg' %}" alt="November">
 
     </div>
-    <div class="month-specs"onclick="setSelectedMonth(12)">
+    <div class="month-specs" onclick="setSelectedMonth(12)">
         <p class="centered">December</p>
         <img class="monthly-pics" src="{% static 'img/dec_light.jpg' %}" alt="December">
 
@@ -99,5 +100,5 @@
         window.location.href = url;
     }
 </script>
-
+<!--angepasst https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit GBT-->
 {% endblock %}

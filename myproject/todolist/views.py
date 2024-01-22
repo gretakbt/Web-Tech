@@ -305,7 +305,7 @@ def add_member(request, group_id):
 
 #bis hier gesamtes Gruppenkonzept mit Chatgpt und Anpassung in das bestehende Projekt
 
-def show_day(request, month, year, day):
+def show_day(request, month, year, day): #ganze funktion aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
     month_int = list(calendar.month_name).index(month)
     events_for_day = Event.objects.filter(users=request.user, start_time__day=day, start_time__year=year, start_time__month=month_int)
 
@@ -318,7 +318,7 @@ def show_day(request, month, year, day):
 
 
 
-def event(request, event_id=None):
+def event(request, event_id=None): #funktion aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
     instance = Event()
 
     if event_id:
@@ -326,7 +326,7 @@ def event(request, event_id=None):
 
     if request.method == 'POST':
         form = EventForm(request.POST, instance=instance)
-        if form.is_valid():
+        if form.is_valid(): # Verbesserung GBT
             form.save()
             return HttpResponseRedirect(reverse('calendar'))
     else:
@@ -341,7 +341,8 @@ def event(request, event_id=None):
 
 from django.http import JsonResponse
 import json
-def event_new(request):
+
+def event_new(request): # Abwandlung von https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit teilweise GBT
     if request.method == 'POST':      
         participant_ids = request.POST.getlist('users')  # eigene Anpassung, damit Events Usern zugeordnet werden können 
 
@@ -369,7 +370,7 @@ def event_new(request):
 
     return render(request, 'cal/new_event.html', context)
 
-def event_edit(request, event_id):
+def event_edit(request, event_id): #Basis von GBT
     instance = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':
         form = EventForm(request.POST, instance=instance)
@@ -387,24 +388,24 @@ def event_edit(request, event_id):
 
     return render(request, 'cal/edit_event.html', context)
 
-def event_delete(request, event_id):
+def event_delete(request, event_id): # Funktion aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
     event = Event.objects.get(id=event_id)
     event.delete()
     return redirect('calendar')
 
-def yearly_view(request):
+def yearly_view(request): # FUnktion aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
     context={
         'today': date.today()
     }
     return render (request, 'cal/yearly_view.html', context)
 
-def change_view(request):
+def change_view(request): # Funktion aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html
     month = request.POST['month']
     year = request.POST['year']
     return redirect(f"/calendar/?month={year}-{month}")
 
 
-def display_events(request, group_id):
+def display_events(request, group_id): # Basis von GBT mit Anpassung an eigene Struktur (z.B, User / Group)
     if request.method == 'POST':
         selected_date = request.POST.get('selected_date')
         group = get_object_or_404(Group, pk=group_id)
@@ -417,7 +418,7 @@ def display_events(request, group_id):
     return HttpResponse("Invalid request")
 
   
-def get_available_time_ranges(group, selected_date, events):
+def get_available_time_ranges(group, selected_date, events): # Basis von GBT mit Anpassung an eigene Struktur (z.B, User / Group)
     available_time_ranges = []
     current_time = datetime.strptime(selected_date, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
 
