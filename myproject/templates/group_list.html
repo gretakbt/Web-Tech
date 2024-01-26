@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+
+{% load static %}
+
 {% block title %}Meine Gruppen{% endblock %}
 
 {% block main%}
@@ -11,13 +14,14 @@
               <div class="panel-title">
                 <h2>My Groups</h2>
               </div>
-              <a href="{% url 'create_group'%}" class="btn btn-default btn-xs" style="align-self: flex-start;">Create new Group</a>
+              <a href="{% url 'create_group'%}" class="btn btn-default btn" style="align-self: flex-start;">Create new Group</a>
             <!--angepasst ende-->  
             </div>
               <ul class="list-group">
                   {% for group in groups %}
                   <div class="list-group-item">
                     <h3>
+                      <img src="{% static 'img/group.jpg' %}" alt="User Icon" width="40" height="40">
                       <a href="{% url 'group_detail' group.id %}" style="text-decoration: none;">{{ group.name }}</a><!--angepasst-->
                     </h3>
                   </div>
