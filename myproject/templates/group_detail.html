@@ -125,11 +125,11 @@
     </div>
 </div>
 <!--angepasst GPT-->
-<div class="panel-heading" style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+<div class="panel-heading" style="margin-top: 50px; display: flex; justify-content: space-between; align-items: center;">
     <form method="post" action="{% url 'find_timeslots' group_id=group.id %}" id="findTimeSlotForm">
         {% csrf_token %}
         <input type="date" name="selected_date" id="selectedDate" style="border-radius: 4px;">
-        <button type="submit" class="btn btn-default btn-xs">Find time slot</button>
+        <button type="submit" class="btn btn-default btn-xs">Find shared time slot</button>
     </form>
 </div>
 <!--angepasst GPT-->
