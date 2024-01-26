@@ -436,3 +436,27 @@ def get_available_time_ranges(group, selected_date, events): # Basis von GBT mit
         available_time_ranges.append((current_time.time(), end_of_day.time()))
 
     return available_time_ranges
+
+def create_event(request):
+    if request.method == 'POST':
+        group_id = request.POST.get('group_id')
+        start_time = request.POST.get('start_time')
+
+        try:
+            group = Group.objects.get(pk=group_id)
+        except Group.DoesNotExist:
+            return HttpResponse("Invalid Group ID")
+
+
+        # Hier können Sie die Benutzer der Gruppe und den Startzeitpunkt in das Formular einfügen
+        # Beispiel:
+        initial_data = {
+            'users': group.members.all(),
+            'start_time': start_time,
+        }
+
+        form = EventForm(initial=initial_data)
+
+        return render(request, 'cal/new_event.html', {'form': form, 'group_id': group_id, 'start_time': start_time})
+
+    return HttpResponse("Invalid request")

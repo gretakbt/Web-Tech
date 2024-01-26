@@ -43,6 +43,7 @@ urlpatterns = [
     path('change_view/', todolist_views.change_view, name='change_view'),
     path('find_timeslots/<int:group_id>/', todolist_views.display_events, name='find_timeslots'),
     path('group/<int:group_id>/', todolist_views.group_detail, name='group_detail'),
+    path('create_event/', todolist_views.create_event, name='create_event'),
 
 ]
 
