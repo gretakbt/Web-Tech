@@ -137,3 +137,8 @@ EMAIL_HOST_PASSWORD = 'xxtf kmmo wgau cojt'
 #Bis hier Email-Versand
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+#Cookies
+Session_Cookie_AGE=7200
+Session_Cookie_SECURE=True
+Session_Cookie_PATH='/'
