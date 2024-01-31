@@ -6,7 +6,7 @@ from django.forms import ModelForm, DateInput
 from .models import *
 
 
-
+#https://github.com/divanov11/Django-To-Do-list-with-user-authentication
 class PositionForm(forms.Form):
     position = forms.CharField()
 

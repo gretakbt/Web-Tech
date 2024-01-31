@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 from poll import views as poll_views
 from  todolist import views as todolist_views
@@ -18,12 +18,12 @@ urlpatterns = [
     path('vote/<poll_id>/', poll_views.vote, name='vote'),
     path('polls/<int:poll_id>/delete/', poll_views.delete_poll, name='delete_poll'),
     path('accounts/login/', todolist_views.CustomLoginView.as_view(), name='login'),
-    path('password_reset/', todolist_views.reset_password, name='reset password'),##
+    path('password_reset/', todolist_views.reset_password, name='reset password'),
     path('password_reset/done/', todolist_views.password_reset_done, name='password_reset_done'),
     path('reset/password/complete/', todolist_views.CustomPasswordResetDoneView.as_view(), name='password_reset_complete'), 
     path('reset/password/confirm/<str:uidb64>/<str:token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),##
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    path('registration', todolist_views.register, name='register'), ##
+    path('registration', todolist_views.register, name='register'), 
     path('', todolist_views.CombinedView.as_view(), name='calendar'),
     path('task/<int:pk>/', todolist_views.TaskDetail.as_view(), name='task'),
     path('task-create/', todolist_views.TaskCreate.as_view(), name='task-create'),
@@ -38,13 +38,10 @@ urlpatterns = [
     path('event/new/', todolist_views.event_new, name='event_new'),
     path('event/edit/<int:event_id>/', todolist_views.event_edit, name='event_edit'),
     path('event/delete/<int:event_id>/', todolist_views.event_delete, name='event_delete'),
-    path('day/(?P<month>\d+)/(?P<year>\d+)/(?P<day>\d+)/', todolist_views.show_day, name='show_day'),
-    path('yearly_view/', todolist_views.yearly_view, name='yearly_view'),
     path('change_view/', todolist_views.change_view, name='change_view'),
     path('find_timeslots/<int:group_id>/', todolist_views.display_events, name='find_timeslots'),
     path('group/<int:group_id>/', todolist_views.group_detail, name='group_detail'),
     path('create_event/', todolist_views.create_event, name='create_event'),
-
 ]
 
 

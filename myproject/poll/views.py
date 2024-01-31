@@ -9,7 +9,7 @@ from .forms import CreatePollForm
 from .models import Poll
 from todolist.models import Group
 
-# Ab hier wo sind polls her @julius + eigene Anpassung an Gruppenkonzept
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django + eigene Anpassung an Gruppenkonzept
 def polls(request):
     group = request.user.groups.first()
     polls = Poll.objects.filter(group=group)
@@ -69,20 +69,15 @@ def vote(request, poll_id):
         'poll' : poll
     }
     return render(request, 'vote.html', context)
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django + eigene Anpassung an Gruppenkonzept
 
-# Chat GPT
+#Chat GPT + https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates
 def delete_poll(request, poll_id):
-    # Umfrageobjekt aus der Datenbank abrufen oder 404-Fehler auslösen
     poll = get_object_or_404(Poll, pk=poll_id)
     group_id = poll.group.id
     if request.method == 'POST':
-        # Wenn das Formular gesendet wurde und die Bestätigung erfolgt ist, die Umfrage löschen
         poll.delete()
-        # Nach dem Löschen zur 'group'-Ansicht zurückkehren (Pfad anpassen, wenn nötig)
         return HttpResponseRedirect(reverse('group_detail', kwargs={'group_id': group_id}))  
-        # 'group' ist der Name der Ansicht, zu der du nach dem Löschen der Umfrage zurückkehren möchtest
-
-    # Falls das Formular nicht gesendet wurde, render die Seite normal (hier könnte man auch eine Fehlermeldung anzeigen)
     return render(request, 'group.html', {'poll': poll})
 
-#Bis hier wo sind polls her @julius + eigene Anpassung an Gruppenkonzept
+

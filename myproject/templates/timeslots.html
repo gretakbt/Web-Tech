@@ -1,31 +1,31 @@
-<!-- available_time_ranges.html von GBT -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Time Ranges</title>
-</head>
-<body>
-    <h1>Available Time Ranges</h1>
-
-    {% if available_time_ranges %}
-    <ul>
-        {% for time_range in available_time_ranges %}
-        <li>
-            {{ time_range.0 }} - {{ time_range.1 }}
-            <form action="{% url 'create_event' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="group_id" value="{{ group_id }}">
-                <input type="hidden" name="start_time" value="{{ form.start_time.value|date:'Y-m-d H:i:s' }}">
-                <button type="submit">Create Event</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No available time ranges.</p>
-    {% endif %}
-</body>
-</html>
+<!--Chat GPT-->
+{% extends "base.html" %}
+{% block main %}
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <h2>Available Times</h2>
+            </div>
+        </div>
+        {% if available_time_ranges %}
+        <ul class="list-group">
+            {% for time_range in available_time_ranges %}
+                <li class="list-group-item">
+                    <h3>{{ time_range.0 }} - {{ time_range.1 }}</h3>
+                    <form action="{% url 'create_event' %}" method="post" class="text-right">
+                        {% csrf_token %}
+                        <input type="hidden" name="group_id" value="{{ group_id }}">
+                        <input type="hidden" name="start_time" value="{{ form.start_time.value|date:'Y-m-d H:i:s' }}">
+                        <button type="submit" class="btn btn-primary btn-xs">Create Event</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No available time ranges.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+<!--Chat GPT-->

@@ -1,5 +1,5 @@
 {% extends 'main.html' %}
-
+<!-- angepasst https://github.com/divanov11/Django-To-Do-list-with-user-authentication-->
 {% block content %}
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
@@ -33,8 +33,6 @@
                 <h1>Hello {{request.user|title}}</h1>
                 <h3 style="margin:0">You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3>
             </div>
-
-
         </div>
 
         <div id="search-add-wrapper">
@@ -47,7 +45,6 @@
             {% endif %}
         </div>
 
-        <!-- Hidden form. Form submits new item positions -->
         <form style="display: none;" id="reorderForm" method="post" action="{% url 'task-reorder' %}">
             {% csrf_token %}
             <input type="hidden" id="positionInput" name="position">
@@ -84,7 +81,7 @@
     var taskList = document.getElementById("tasklist");
     var reorderForm = document.getElementById("reorderForm");
     var positionInput = document.getElementById("positionInput");
-
+    
     let sortable = Sortable.create(taskList, {
         handle: '.handle',
         ghostClass: 'dropArea',
@@ -107,3 +104,4 @@
 
 {% endblock %}
 
+<!-- angepasst https://github.com/divanov11/Django-To-Do-list-with-user-authentication-->

@@ -29,7 +29,7 @@ from django.contrib.auth import get_user_model
 from .forms import CustomUserCreationForm
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode
-from django.contrib import messages  # Hinzugefügter Import für Nachrichten
+from django.contrib import messages  
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
 from django.views.generic import TemplateView
@@ -46,6 +46,7 @@ from .models import *
 from .utils import Calendar
 from .forms import EventForm
 from django.db.models import Q
+from django.http import JsonResponse
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
@@ -130,7 +131,6 @@ class CombinedView(LoginRequiredMixin, ListView, View):
             if 1 <= month <= 12:
                 return datetime(year, month, 1)
         
-        #Wenn der Monat ungültig ist, verwende den aktuellen Monat
         return datetime(today.year, today.month, 1)
 
     def prev_month(self, d):
@@ -173,6 +173,7 @@ class CombinedView(LoginRequiredMixin, ListView, View):
 
         return render(request, self.template_name, context)
     
+#angepasst https://github.com/divanov11/Django-To-Do-list-with-user-authentication
 
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
@@ -217,6 +218,7 @@ class TaskReorder(View):
                 self.request.user.set_task_order(positionList)
 
         return redirect(reverse_lazy('calendar'))
+#angepasst https://github.com/divanov11/Django-To-Do-list-with-user-authentication
 
 
 #Ab hier gesamtes Gruppenkonzept mit Chatgpt und Anpassung in das bestehende Projekt (Projezieren der Element auf Gruppenseiten)
@@ -437,6 +439,7 @@ def get_available_time_ranges(group, selected_date, events): # Basis von GBT mit
 
     return available_time_ranges
 
+#Chat GPT
 def create_event(request):
     if request.method == 'POST':
         group_id = request.POST.get('group_id')
@@ -447,9 +450,6 @@ def create_event(request):
         except Group.DoesNotExist:
             return HttpResponse("Invalid Group ID")
 
-
-        # Hier können Sie die Benutzer der Gruppe und den Startzeitpunkt in das Formular einfügen
-        # Beispiel:
         initial_data = {
             'users': group.members.all(),
             'start_time': start_time,

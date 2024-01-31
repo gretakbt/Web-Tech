@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from .models import Poll, Group
 from django import forms
 
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django
 
 class CreatePollForm(ModelForm):
     class Meta:
@@ -15,3 +16,4 @@ class CreatePollForm(ModelForm):
         # Begrenze die Auswahl auf die angegebene Gruppe
         if group_id:
             self.fields['group'].queryset = Group.objects.filter(id=group_id)
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django

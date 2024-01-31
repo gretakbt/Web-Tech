@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+<!--https://prettyprinted.com/tutorials/creating-a-poll-app-in-django/-->
 {% load static %}
 
 {% block title %}group{% endblock %}
@@ -57,7 +57,7 @@
         
     }
 </style>
-<!--angepasst-->
+<!--angepasst GPT -->
 <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
     <div class="panel-title">
         {{ group.name }}
@@ -76,7 +76,7 @@
     {% endfor %}
 </div>
 {% endif %}
-
+<!--https://prettyprinted.com/tutorials/creating-a-poll-app-in-django/-->
 <div class="row">
     <div class="col-lg-6 col-lg-offset-0">
         <!--angepasst-->
@@ -124,6 +124,7 @@
         </div>
     </div>
 </div>
+<!--https://prettyprinted.com/tutorials/creating-a-poll-app-in-django/-->
 <!--angepasst GPT-->
 <div class="panel-heading" style="margin-top: 50px; display: flex; justify-content: space-between; align-items: center;">
     <form method="post" action="{% url 'find_timeslots' group_id=group.id %}" id="findTimeSlotForm">

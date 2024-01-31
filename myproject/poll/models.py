@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from todolist.models import Group
-
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django
 class Poll(models.Model):
+    id = models.BigAutoField(primary_key=True)
     question = models.TextField(max_length=105)
     option_one = models.CharField(max_length=30)
     option_two = models.CharField(max_length=30)
@@ -15,3 +16,5 @@ class Poll(models.Model):
 
     def total(self):
         return self.option_one_count + self.option_two_count + self.option_three_count
+
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django

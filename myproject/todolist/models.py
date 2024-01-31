@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-
+#https://github.com/divanov11/Django-To-Do-list-with-user-authentication
 class Task(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
@@ -20,6 +21,7 @@ class Task(models.Model):
 
 # ab hier erstellen von Group Model unter zuhilfenahme von der Django Dokumentation https://docs.djangoproject.com/en/5.0/topics/db/models/
 class Group(models.Model):
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=100)
     members = models.ManyToManyField(User, related_name='group_memberships')
     polls = models.ManyToManyField('poll.Poll', related_name='groups_polls', blank=True)
@@ -39,6 +41,7 @@ COLOR_CHOICES = (
 )
 
 class Event(models.Model): # Klasse aus https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html mit Anpassung der User
+    id = models.BigAutoField(primary_key=True)
     users = models.ManyToManyField(User, related_name='events')
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -53,4 +56,4 @@ class Event(models.Model): # Klasse aus https://www.huiwenteo.com/normal/2018/07
         start_time = self.start_time.strftime("%I:%M %p")
         end_time = self.end_time.strftime("%I:%M %p")
         path = reverse('event_edit', args=(self.id,))
-        return f'<a href="{path}"> {start_time}-{end_time} {self.title} </a>'
+        return f'<a href="{path}" style="color: white;"> {start_time}-{end_time} {self.title} </a>'

@@ -1,3 +1,4 @@
+/*https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html*/ 
 $("#myModal").click(function() {
   $("#exampleModal").modal("toggle");
   $("#exampleModal").modal("hide");
@@ -151,3 +152,4 @@ if (currentTheme) {
     toggleSwitch.checked = true;
   }
 }
+/*https://www.huiwenteo.com/normal/2018/07/24/django-calendar.html*/ 

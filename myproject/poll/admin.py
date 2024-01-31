@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+#https://prettyprinted.com/tutorials/creating-a-poll-app-in-django
 from .models import Poll
-
 admin.site.register(Poll)
